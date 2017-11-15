@@ -1,0 +1,14 @@
+# Maven
+target/
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+
+
+/src/main/resources/config.properties
+/src/main/resources/ebean.properties
+/src/test/resources/test-ebean.properties
+/src/test/resources/logback-test.xml
