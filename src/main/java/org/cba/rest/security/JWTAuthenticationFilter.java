@@ -5,8 +5,6 @@ import com.nimbusds.jose.JWSVerifier;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.SignedJWT;
 import org.cba.config.Config;
-import org.cba.model.entities.User;
-import org.cba.model.entities.query.QUser;
 
 import javax.annotation.Priority;
 import javax.annotation.security.DenyAll;
@@ -35,8 +33,6 @@ import java.util.logging.Logger;
 @Priority(Priorities.AUTHENTICATION)
 public class JWTAuthenticationFilter implements ContainerRequestFilter {
 
-    private static final List<Class<? extends Annotation>> securityAnnotations = Arrays.asList(DenyAll.class, PermitAll.class, RolesAllowed.class);
-
     @Context
     private ResourceInfo resourceInfo;
 
@@ -54,12 +50,7 @@ public class JWTAuthenticationFilter implements ContainerRequestFilter {
                     throw new NotAuthorizedException("Your authorization token has timed out, please login again", Response.Status.UNAUTHORIZED);
                 }
 
-                User user = getUserFromToken(token);
-                if (user == null) {
-                    throw new NotAuthorizedException("UserResource could not be authenticated via the provided token", Response.Status.FORBIDDEN);
-                }
-
-                UserPrincipal userPrincipal = new UserPrincipal(user);
+                final UserPrincipal userPrincipal = getUserPrincipalFromToken(token);
                 request.setSecurityContext(new SecurityContext() {
 
                     @Override
@@ -90,6 +81,7 @@ public class JWTAuthenticationFilter implements ContainerRequestFilter {
     }
 
     private boolean isSecuredResource() {
+        List<Class<? extends Annotation>> securityAnnotations = Arrays.asList(DenyAll.class, PermitAll.class, RolesAllowed.class);
         for (Class<? extends Annotation> securityClass : securityAnnotations) {
             if (resourceInfo.getResourceMethod().isAnnotationPresent(securityClass)) {
                 return true;
@@ -122,15 +114,36 @@ public class JWTAuthenticationFilter implements ContainerRequestFilter {
         return false;
     }
 
-    private User getUserFromToken(String token) throws ParseException, JOSEException {
+    private UserPrincipal getUserPrincipalFromToken(String token) throws ParseException, JOSEException {
         SignedJWT signedJWT = SignedJWT.parse(token);
         JWSVerifier verifier = new MACVerifier(Config.SECRET_SIGNATURE);
 
         if (signedJWT.verify(verifier)) {
             String username = signedJWT.getJWTClaimsSet().getSubject();
-            return new QUser().username.eq(username).findOne();
+            List<String> roles = signedJWT.getJWTClaimsSet().getStringListClaim("roles");
+            return new UserPrincipal(username,roles);
         } else {
             throw new JOSEException("Firm is not verified.");
+        }
+    }
+
+    class UserPrincipal implements Principal {
+        private String username;
+        private List<String> roles;
+
+        public UserPrincipal(String username, List<String> roles) {
+            super();
+            this.username = username;
+            this.roles = roles;
+        }
+
+        @Override
+        public String getName() {
+            return username;
+        }
+
+        public boolean isUserInRole(String checkedRole) {
+            return roles.contains(checkedRole);
         }
     }
 }

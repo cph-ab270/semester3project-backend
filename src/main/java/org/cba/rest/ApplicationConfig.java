@@ -1,8 +1,11 @@
 package org.cba.rest;
 
+import org.cba.rest.error.GenericExceptionMapper;
+import org.cba.rest.error.NotAuthorizedExceptionMapper;
+import org.cba.rest.error.NotFoundExceptionMapper;
+import org.cba.rest.resources.HelloWorld;
 import org.cba.rest.resources.Login;
 import org.cba.rest.security.JWTAuthenticationFilter;
-import org.cba.rest.security.NotAuthorizedExceptionMapper;
 import org.cba.rest.security.RolesAllowedFilter;
 
 import javax.ws.rs.ApplicationPath;
@@ -20,16 +23,12 @@ public class ApplicationConfig extends Application {
         return resources;
     }
 
-    /**
-     * Do not modify addRestResourceClasses() method.
-     * It is automatically populated with
-     * all resources defined in the project.
-     * If required, comment out calling this method in getClasses().
-     */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(Login.class);
-
+        resources.add(HelloWorld.class);
         resources.add(NotAuthorizedExceptionMapper.class);
+        resources.add(GenericExceptionMapper.class);
+        resources.add(NotFoundExceptionMapper.class);
         resources.add(JWTAuthenticationFilter.class);
         resources.add(RolesAllowedFilter.class);
     }

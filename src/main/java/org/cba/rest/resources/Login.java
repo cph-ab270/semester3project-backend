@@ -15,7 +15,7 @@ import org.cba.model.entities.Role;
 import org.cba.model.entities.User;
 import org.cba.model.exceptions.ResourceNotFoundException;
 import org.cba.model.facade.LoginFacade;
-import org.cba.rest.resources.utility.ErrorResponse;
+import org.cba.rest.error.ErrorResponse;
 import org.jetbrains.annotations.NotNull;
 
 import javax.ws.rs.Consumes;
@@ -24,7 +24,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by adam on 11/15/2017.
@@ -53,18 +55,19 @@ public class Login {
     }
 
     private String createToken(User user) throws JOSEException {
-        String roles = getRolesAsString(user);
+        List<String> roles = getRolesAsStringList(user);
         String issuer = "semester3project-fbbc";
 
         JWSSigner signer = new MACSigner(Config.SECRET_SIGNATURE);
-        Date date = new Date();
+        Date now = new Date();
+        Date after7Days = new Date(now.getTime() + 60 * 60 * 24 * 7);
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
                 .subject(user.getUsername())
                 .claim("username", user.getUsername())
                 .claim("roles", roles)
                 .claim("issuer", issuer)
-                .issueTime(date)
-                .expirationTime(new Date(date.getTime() + 60 * 60 * 24 * 7))
+                .issueTime(now)
+                .expirationTime(after7Days)
                 .build();
         SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), claimsSet);
         signedJWT.sign(signer);
@@ -72,12 +75,11 @@ public class Login {
     }
 
     @NotNull
-    private String getRolesAsString(User user) {
-        String roles = "";
+    private List<String> getRolesAsStringList(User user) {
+        List<String> list = new ArrayList<>();
         for (Role role : user.getRoles()) {
-            roles += role.getName();
+            list.add(role.getName());
         }
-        roles = roles.length() > 0 ? roles.substring(0, roles.length() - 1) : "";
-        return roles;
+        return list;
     }
 }
