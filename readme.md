@@ -1,3 +1,5 @@
+# IntelIJ Setup
+
 Clone the project by using git clone on the command line and then opening the folder in Intelij (File -> Open -> select folder).
 Alternatively, clone the project by using the File -> New -> Project from Version Control -> Github option in IntelliJ.
 
