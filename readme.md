@@ -3,7 +3,7 @@
 Clone the project by using git clone on the command line and then opening the folder in Intelij (File -> Open -> select folder).
 Alternatively, clone the project by using the File -> New -> Project from Version Control -> Github option in IntelliJ.
 
-Then install Netbeans plugin, open the plugin window: cltr/cmd+shift+a type "plugins" and press enter, click on browse repositories, search for Ebean and install Ebean Enhancement 11.x. Restart IntelliJ. Then tick Ebean 11.x enhancement under build tab (this plugin is needed for the Ebean to run).
+Then install Ebean plugin, open the plugin window: cltr/cmd+shift+a type "plugins" and press enter, click on browse repositories, search for Ebean and install Ebean Enhancement 11.x. Restart IntelliJ. Then tick Ebean 11.x enhancement under build tab (this plugin is needed for the Ebean to run).
 
 Open the console (alt+f12) and type in "mvn ebean-codegen:init" (this generates Ebean property files, which is something like the persistence.xml file). If the command is not working it's probably because you don't have mvn installed, which I recommend to do [quide here](https://maven.apache.org/install.html).
 
