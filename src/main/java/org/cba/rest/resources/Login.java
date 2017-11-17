@@ -60,7 +60,7 @@ public class Login {
 
         JWSSigner signer = new MACSigner(Config.SECRET_SIGNATURE);
         Date now = new Date();
-        Date after7Days = new Date(now.getTime() + 60 * 60 * 24 * 7);
+        Date after7Days = new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7);
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
                 .subject(user.getUsername())
                 .claim("username", user.getUsername())
