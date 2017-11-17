@@ -1,7 +1,7 @@
 package org.cba.rest;
 
 import org.cba.rest.error.GenericExceptionMapper;
-import org.cba.rest.error.NotAuthorizedExceptionMapper;
+import org.cba.rest.error.WebApplicationExceptionMapper;
 import org.cba.rest.error.NotFoundExceptionMapper;
 import org.cba.rest.resources.HelloWorld;
 import org.cba.rest.resources.Login;
@@ -26,7 +26,7 @@ public class ApplicationConfig extends Application {
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(Login.class);
         resources.add(HelloWorld.class);
-        resources.add(NotAuthorizedExceptionMapper.class);
+        resources.add(WebApplicationExceptionMapper.class);
         resources.add(GenericExceptionMapper.class);
         resources.add(NotFoundExceptionMapper.class);
         resources.add(JWTAuthenticationFilter.class);

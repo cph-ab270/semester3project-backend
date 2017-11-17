@@ -10,6 +10,7 @@ public class GenericExceptionMapper implements ExceptionMapper<Exception> {
 
     @Override
     public Response toResponse(Exception exception) {
+        exception.printStackTrace();
         return new ErrorResponse(500, "An unexpected problem occured on the server.").build();
     }
 }
