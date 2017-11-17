@@ -1,7 +1,6 @@
 package org.cba.model.facade;
 
 import org.cba.model.entities.User;
-import org.cba.model.entities.query.QUser;
 import org.cba.model.exceptions.ResourceNotFoundException;
 
 /**
@@ -9,7 +8,7 @@ import org.cba.model.exceptions.ResourceNotFoundException;
  */
 public class LoginFacade {
     public User authenticateUser(String username, String password) throws ResourceNotFoundException, IncorrectPasswordException {
-        User user = new QUser().username.eq(username).findOne();
+        User user = User.find.where().username.eq(username).findOne();
         if (user == null) {
             throw new ResourceNotFoundException(User.class,username);
         }

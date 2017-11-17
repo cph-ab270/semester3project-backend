@@ -1,5 +1,6 @@
 package org.cba.model.entities;
 
+import org.cba.model.entities.finder.UserFinder;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -12,6 +13,8 @@ import java.util.List;
  */
 @Entity
 public class User {
+
+  public static final UserFinder find = new UserFinder();
     @Id
     private int id;
 
