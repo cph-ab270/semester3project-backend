@@ -87,6 +87,11 @@
             <artifactId>javaee-web-api</artifactId>
             <version>7.0</version>
         </dependency>
+        <dependency>
+            <groupId>io.ebean.tools</groupId>
+            <artifactId>finder-generator</artifactId>
+            <version>4.2.1</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -1,7 +1,6 @@
 package org.cba.rest.resources;
 
 import org.cba.model.entities.User;
-import org.cba.model.entities.query.QUser;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.GET;
@@ -25,7 +24,7 @@ public class HelloWorld {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getProtectedMessage() {
-        User user = new QUser().id.eq(1).findOne();
+        User user = User.find.byId(1);
         return "Hello "+user.getUsername();
     }
 }
