@@ -19,7 +19,9 @@ jobs:
     - stage: api-test
       script:
        - mvn war:exploded
-       - docker-compose up
+       - docker-compose build
+       - docker-compose create
+       - docker-compose start
        - mvn test -DtestGroup=api -Dserver.port=5001
     - stage: deploy
       script:
