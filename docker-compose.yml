@@ -3,6 +3,7 @@ version: '3'
 services:
   holiday-service:
     build: .
+    image: fbbc/sem3project-backend
     ports:
      - 5001:8080
     depends_on:
