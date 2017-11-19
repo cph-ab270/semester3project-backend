@@ -15,7 +15,7 @@ public class HelloWorldTest extends FunctionalTest{
     }
 
     @Test
-    public void testHellouSER() {
+    public void testHelloUser() {
         given().when().get("/hello/user").then().body(containsString("Hello Adam")).statusCode(200);
     }
 }

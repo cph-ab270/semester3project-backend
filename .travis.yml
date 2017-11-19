@@ -3,6 +3,11 @@ sudo: required
 language: java
 jdk: oraclejdk8
 
+#Maven Cache
+cache:
+  directories:
+  - $HOME/.m2
+
 services:
   - docker
 
@@ -19,9 +24,7 @@ jobs:
     - stage: api-test
       script:
        - mvn war:exploded
-       - docker-compose build
-       - docker-compose create
-       - docker-compose start
+       - docker-compose up -d
        - mvn test -DtestGroup=api -Dserver.port=5001
     - stage: deploy
       script:
