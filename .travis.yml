@@ -13,22 +13,19 @@ services:
 
 stages:
   - unit-test
-  - api-test
-  - deploy
+  - api-test-Deploy
 
 jobs:
   include:
     - stage: unit-test
       script:
        - mvn test -DtestGroup=org/cba
-    - stage: api-test
+    - stage: api-test-Deploy
       script:
        - mvn war:exploded
        - docker-compose up -d
        - mvn test -DtestGroup=api -Dserver.port=5001
-    - stage: deploy
-      script:
        - if [ "$TRAVIS_BRANCH" == "master" ]; then
-          docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
-          docker push fbbc/sem3project-backend;
-          fi
+       docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+       docker push fbbc/sem3project-backend;
+       fi
