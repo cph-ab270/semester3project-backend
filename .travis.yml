@@ -11,16 +11,21 @@ cache:
 services:
   - docker
 
-before_install:
-  - mvn war:exploded
-  - docker-compose up -d
+stages:
+  - unit-test
+  - api-test-Deploy
 
-script:
-  - mvn test -DtestGroup=org/cba
-  - mvn test -DtestGroup=api -Dserver.port=5001
-
-after_success:
-  - if [ "$TRAVIS_BRANCH" == "master" && $TRAVIS_PULL_REQUEST == "false" ]; then
-    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
-    docker push fbbc/sem3project-backend;
-    fi
+jobs:
+  include:
+    - stage: unit-test
+      script:
+       - mvn test -DtestGroup=org/cba
+    - stage: api-test-Deploy
+      script:
+       - mvn war:exploded
+       - docker-compose up -d
+       - mvn test -DtestGroup=api -Dserver.port=5001
+       - if [ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_PULL_REQUEST" == "false" ]; then
+          docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+          docker push fbbc/sem3project-backend;
+          fi
