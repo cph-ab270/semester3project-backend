@@ -25,7 +25,8 @@ jobs:
        - mvn war:exploded
        - docker-compose up -d
        - mvn test -DtestGroup=api -Dserver.port=5001
-       - if [ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_EVENT_TYPE" == "push" ]; then
+       - |
+         if [ "$TRAVIS_BRANCH" == "master" && && $TRAVIS_PULL_REQUEST == "false" ]; then
           docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
           docker push fbbc/sem3project-backend;
-          fi
+         fi
