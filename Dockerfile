@@ -1,6 +1,7 @@
 FROM tomcat:8.0-jre8
 
-RUN rm -rf /usr/local/tomcat/webapps/ROOT
-ADD /out/artifacts/semester3project_war/semester3project_war.war /usr/local/tomcat/webapps/ROOT.war
+ADD out/artifacts/semester3project_war_exploded /usr/local/tomcat/webapps/ROOT/
+
+RUN mv /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/deployment-ebean.properties /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/ebean.properties
 
 CMD ["catalina.sh", "run"]
