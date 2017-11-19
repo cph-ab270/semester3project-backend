@@ -1,6 +1,9 @@
+package org.cba;
+
 import org.cba.model.entities.User;
-import org.testng.Assert;
-import org.testng.annotations.Test;
+import org.junit.Assert;
+import org.junit.Test;
+
 
 /**
  * Created by adam on 11/17/2017.

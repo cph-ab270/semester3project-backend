@@ -1,0 +1,32 @@
+sudo: required
+
+language: java
+jdk: oraclejdk8
+
+#Maven Cache
+cache:
+  directories:
+  - $HOME/.m2
+
+services:
+  - docker
+
+stages:
+  - unit-test
+  - api-test-Deploy
+
+jobs:
+  include:
+    - stage: unit-test
+      script:
+       - mvn test -DtestGroup=org/cba
+    - stage: api-test-Deploy
+      script:
+       - mvn war:exploded
+       - docker-compose up -d
+       - mvn test -DtestGroup=api -Dserver.port=5001
+    - stage: api-test-Deploy
+      if: branch = master AND type = push
+      script:
+       - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+       - docker push fbbc/sem3project-backend;

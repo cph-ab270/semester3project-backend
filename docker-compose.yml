@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  holiday-service:
+    build: .
+    image: fbbc/sem3project-backend
+    ports:
+     - 5001:8080
+    depends_on:
+     - mysql
+
+  mysql:
+    image: mysql:5.6.26
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: cba_sem3project
