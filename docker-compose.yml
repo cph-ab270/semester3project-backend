@@ -3,6 +3,7 @@ version: '3'
 services:
   holiday-service:
     build: .
+    env_file: .env
     image: fbbc/sem3project-backend
     ports:
      - 5001:8080
@@ -14,5 +15,5 @@ services:
     ports:
       - "3307:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: ${PROP_DB_PASSWORD}
       MYSQL_DATABASE: cba_sem3project

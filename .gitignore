@@ -8,7 +8,6 @@ out
 gen
 
 
-/src/main/resources/config.properties
-/src/main/resources/ebean.properties
 /src/test/resources/logback-test.xml
-/log/
+log/
+/.env

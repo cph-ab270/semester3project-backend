@@ -4,7 +4,7 @@ import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSVerifier;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.SignedJWT;
-import org.cba.config.Config;
+import org.cba.config.Env;
 
 import javax.annotation.Priority;
 import javax.annotation.security.DenyAll;
@@ -98,7 +98,7 @@ public class JWTAuthenticationFilter implements ContainerRequestFilter {
     private boolean isTokenExpired(String token) throws ParseException, JOSEException {
         try {
             SignedJWT signedJWT = SignedJWT.parse(token);
-            JWSVerifier verifier = new MACVerifier(Config.SECRET_SIGNATURE);
+            JWSVerifier verifier = new MACVerifier(Env.SECRET_TOKEN);
 
             if (signedJWT.verify(verifier)) {
                 return new Date().getTime() > signedJWT.getJWTClaimsSet().getExpirationTime().getTime();
@@ -116,7 +116,7 @@ public class JWTAuthenticationFilter implements ContainerRequestFilter {
 
     private UserPrincipal getUserPrincipalFromToken(String token) throws ParseException, JOSEException {
         SignedJWT signedJWT = SignedJWT.parse(token);
-        JWSVerifier verifier = new MACVerifier(Config.SECRET_SIGNATURE);
+        JWSVerifier verifier = new MACVerifier(Env.SECRET_TOKEN);
 
         if (signedJWT.verify(verifier)) {
             String username = signedJWT.getJWTClaimsSet().getSubject();

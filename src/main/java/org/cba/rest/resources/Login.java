@@ -10,7 +10,7 @@ import com.nimbusds.jose.JWSSigner;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import org.cba.config.Config;
+import org.cba.config.Env;
 import org.cba.model.entities.Role;
 import org.cba.model.entities.User;
 import org.cba.model.exceptions.ResourceNotFoundException;
@@ -58,7 +58,7 @@ public class Login {
         List<String> roles = getRolesAsStringList(user);
         String issuer = "semester3project-fbbc";
 
-        JWSSigner signer = new MACSigner(Config.SECRET_SIGNATURE);
+        JWSSigner signer = new MACSigner(Env.SECRET_TOKEN);
         Date now = new Date();
         Date after7Days = new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7);
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()

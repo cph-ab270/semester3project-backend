@@ -15,6 +15,9 @@ stages:
   - unit-test
   - api-test-Deploy
 
+before_install:
+  - env | grep -E '^PROP_' > .env
+
 jobs:
   include:
     - stage: unit-test
