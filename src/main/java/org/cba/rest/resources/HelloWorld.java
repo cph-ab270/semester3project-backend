@@ -2,7 +2,6 @@ package org.cba.rest.resources;
 
 import org.cba.model.entities.User;
 
-import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -19,7 +18,6 @@ public class HelloWorld {
         return "Hello world";
     }
 
-    @RolesAllowed("User")
     @Path("user")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
