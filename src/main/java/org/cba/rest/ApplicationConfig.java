@@ -1,8 +1,10 @@
 package org.cba.rest;
 
+import org.cba.rest.cors.CorsRequestFilter;
+import org.cba.rest.cors.CorsResponseFilter;
 import org.cba.rest.error.GenericExceptionMapper;
-import org.cba.rest.error.WebApplicationExceptionMapper;
 import org.cba.rest.error.NotFoundExceptionMapper;
+import org.cba.rest.error.WebApplicationExceptionMapper;
 import org.cba.rest.resources.HelloWorld;
 import org.cba.rest.resources.Login;
 import org.cba.rest.security.JWTAuthenticationFilter;
@@ -31,6 +33,8 @@ public class ApplicationConfig extends Application {
         resources.add(NotFoundExceptionMapper.class);
         resources.add(JWTAuthenticationFilter.class);
         resources.add(RolesAllowedFilter.class);
+        resources.add(CorsRequestFilter.class);
+        resources.add(CorsResponseFilter.class);
     }
 
 }
