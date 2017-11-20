@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Ejdems666/semester3project-backend.svg?branch=master)](https://travis-ci.org/Ejdems666/semester3project-backend)
+
 # IntelIJ Setup
 
 Clone the project by using git clone on the command line and then opening the folder in Intelij (File -> Open -> select folder).
