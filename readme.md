@@ -9,7 +9,7 @@ Then install Ebean plugin, open the plugin window: cltr/cmd+shift+a type "plugin
     
 Now you're setup and you only need to create a running configuration for your local tomcat server.
 
-## Running config
+## Running config in IntelIJ
 
 alt+shift+f10 Choose "Edit configurations"
 
@@ -20,18 +20,22 @@ Configure application server if you don't have it already. Just click on the bro
 Click on the "Fix" button in the bottom and choose the option with "exploded" word in it.
 
 Go to the Startup/Connection tab and setup enviromental variables, here is an example:
-PROP_DB_PASSWORD=root
-PROP_DB_URL=jdbc:mysql://localhost:3306/cba_sem3project
-PROP_SECRET_TOKEN=h6hFhhYY77765444EEEEvgfdeMnbV30h
+
+    PROP_DB_PASSWORD=root
+    PROP_DB_URL=jdbc:mysql://localhost:3306/cba_sem3project
+    PROP_SECRET_TOKEN=h6hFhhYY77765444EEEEvgfdeMnbV30h
 
 Now you have a configuration that runs a tomcat server on your PC, deploys your exploded artifact (uncompressed folder with compiled Java sources, libs, resources, etc.) 
 and sets up the environmental variables.
 
-## Running with docker-compose
+# Running with docker-compose
 
 Install Docker, create .env in root folder of the project with the environmental variables (example in Running config section)
+
 run docker-compose up -d
+
 update by docker-compose up --build
+
 However to update the sources you need to rebuild the exploded artifact (Build tab -> Build artifacts)
 Because of this, docker-compose is not the recommended way, but I might figure out soon how to automate this.
 The nice think about the docker way is that you'll run the server the exact same way as in Travis and DigitalOcean.
