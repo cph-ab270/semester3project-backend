@@ -33,10 +33,10 @@ public class ErrorResponse {
     }
 
     public Response build() {
-        ObjectMapper gson = new ObjectMapper();
+        ObjectMapper mapper = new ObjectMapper();
         String json = null;
         try {
-            json = gson.writeValueAsString(this);
+            json = mapper.writeValueAsString(this);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
