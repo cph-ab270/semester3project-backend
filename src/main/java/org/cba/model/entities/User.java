@@ -1,5 +1,6 @@
 package org.cba.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import org.cba.model.entities.finder.UserFinder;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -11,6 +12,7 @@ import java.util.List;
 /**
  * Created by adam on 11/13/2017.
  */
+@JsonFilter("SimpleUserFilter")
 @Entity
 public class User {
 

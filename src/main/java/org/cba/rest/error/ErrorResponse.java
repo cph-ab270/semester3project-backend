@@ -1,6 +1,7 @@
 package org.cba.rest.error;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.cba.model.exceptions.ResourceNotFoundException;
 
 import javax.ws.rs.core.MediaType;
@@ -32,8 +33,13 @@ public class ErrorResponse {
     }
 
     public Response build() {
-        Gson gson = new Gson();
-        String json = gson.toJson(this);
+        ObjectMapper mapper = new ObjectMapper();
+        String json = null;
+        try {
+            json = mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         return Response.status(status).entity(json).encoding(MediaType.APPLICATION_JSON).build();
     }
 }

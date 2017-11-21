@@ -1,8 +1,8 @@
 package org.cba.rest.resources;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
@@ -24,8 +24,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -37,18 +39,19 @@ public class Login {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response login(String jsonString) throws JOSEException {
-        JsonObject json = new JsonParser().parse(jsonString).getAsJsonObject();
-        String username = json.get("username").getAsString();
-        String password = json.get("password").getAsString();
+    public Response login(String jsonString) throws JOSEException, IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonData = objectMapper.readTree(jsonString);
+        String username = jsonData.get("username").asText();
+        String password = jsonData.get("password").asText();
         LoginFacade loginFacade = new LoginFacade();
         try {
             User user = loginFacade.authenticateUser(username,password);
             String token = createToken(user);
-            JsonObject responseJson = new JsonObject();
-            responseJson.addProperty("username", username);
-            responseJson.addProperty("token", token);
-            return Response.ok(new Gson().toJson(responseJson)).build();
+            ObjectNode resultJson = objectMapper.createObjectNode();
+            resultJson.put("username", username);
+            resultJson.put("token", token);
+            return Response.ok(resultJson.toString()).build();
         } catch (ResourceNotFoundException | LoginFacade.IncorrectPasswordException e) {
             return new ErrorResponse(401,"Username or password is incorrect!").build();
         }

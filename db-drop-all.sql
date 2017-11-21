@@ -1,8 +1,10 @@
-alter table user_role drop foreign key fk_user_role_user;
-drop index ix_user_role_user on user_role;
+alter table user_role drop constraint if exists fk_user_role_user;
+drop index if exists ix_user_role_user;
 
-alter table user_role drop foreign key fk_user_role_role;
-drop index ix_user_role_role on user_role;
+alter table user_role drop constraint if exists fk_user_role_role;
+drop index if exists ix_user_role_role;
+
+drop table if exists rental;
 
 drop table if exists role;
 

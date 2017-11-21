@@ -1,3 +1,14 @@
+create table rental (
+  id                            integer auto_increment not null,
+  city                          varchar(255) not null,
+  zip                           varchar(255) not null,
+  address                       varchar(255) not null,
+  description                   varchar(255),
+  rating                        integer not null,
+  image_url                     varchar(255) not null,
+  constraint pk_rental primary key (id)
+);
+
 create table role (
   id                            integer auto_increment not null,
   name                          varchar(255),
