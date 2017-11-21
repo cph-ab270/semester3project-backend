@@ -28,10 +28,4 @@ public class RentalResource {
         if (rental == null) throw new NotFoundException();
         return mapper.writeValueAsString(rental);
     }
-//
-//    @GET
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public String getPlaces() {
-//        return gson.toJson(facade.getAllPlaces());
-//    }
 }
