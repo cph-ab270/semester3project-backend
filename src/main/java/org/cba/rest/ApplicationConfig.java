@@ -11,6 +11,7 @@ import org.cba.rest.resources.Register;
 import org.cba.rest.resources.RentalResource;
 import org.cba.rest.security.JWTAuthenticationFilter;
 import org.cba.rest.security.RolesAllowedFilter;
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
@@ -28,6 +29,7 @@ public class ApplicationConfig extends Application {
     }
 
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(MultiPartFeature.class);
         resources.add(Login.class);
         resources.add(Register.class);
         resources.add(HelloWorld.class);
