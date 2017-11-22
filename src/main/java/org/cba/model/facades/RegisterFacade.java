@@ -12,20 +12,19 @@ import org.cba.model.util.Hasher;
 public class RegisterFacade {
 
     public User register(String username, String password) throws UsernameNotUniqueException {
-        if (isUsernameUnique(username)) {
-            Hasher hasher = new Hasher();
-            String salt = hasher.generateSalt();
-            String hashedPassword = hasher.hashPassword(password,salt);
-            User user = new User();
-            user.setUsername(username);
-            user.setPassword(hashedPassword);
-            user.setSalt(salt);
-            addBasicUserRole(user);
-            Ebean.save(user);
-            return user;
-        } else {
+        if (!isUsernameUnique(username)) {
             throw new UsernameNotUniqueException();
         }
+        Hasher hasher = new Hasher();
+        String salt = hasher.generateSalt();
+        String hashedPassword = hasher.hashPassword(password, salt);
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(hashedPassword);
+        user.setSalt(salt);
+        addBasicUserRole(user);
+        Ebean.save(user);
+        return user;
     }
 
     private void addBasicUserRole(User user) {

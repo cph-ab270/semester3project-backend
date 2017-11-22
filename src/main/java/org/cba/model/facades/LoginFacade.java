@@ -9,17 +9,16 @@ import org.cba.model.util.Hasher;
  */
 public class LoginFacade {
     public User authenticateUser(String username, String password) throws ResourceNotFoundException, IncorrectPasswordException {
-        User user = User.find.where().username.eq(username).findOne();
+        User user = User.find.where().username.equalTo(username).findOne();
         if (user == null) {
             throw new ResourceNotFoundException(User.class,username);
         }
         Hasher hasher = new Hasher();
         String hashedPassword = hasher.hashPassword(password,user.getSalt());
-        if (hashedPassword.equals(user.getPassword())) {
-            return user;
-        } else {
+        if (!hashedPassword.equals(user.getPassword())) {
             throw new IncorrectPasswordException();
         }
+        return user;
     }
 
     public class IncorrectPasswordException extends Exception{
