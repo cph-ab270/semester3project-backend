@@ -1,4 +1,4 @@
-package org.cba.rest.security;
+package org.cba.rest.providers.security;
 
 import javax.annotation.Priority;
 import javax.annotation.security.DenyAll;

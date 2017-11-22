@@ -13,8 +13,8 @@ import com.nimbusds.jwt.SignedJWT;
 import org.cba.model.entities.Role;
 import org.cba.model.entities.User;
 import org.cba.model.exceptions.ResourceNotFoundException;
-import org.cba.model.facade.LoginFacade;
-import org.cba.rest.error.ErrorResponse;
+import org.cba.model.facades.LoginFacade;
+import org.cba.rest.util.ErrorResponse;
 import org.jetbrains.annotations.NotNull;
 
 import javax.ws.rs.Consumes;

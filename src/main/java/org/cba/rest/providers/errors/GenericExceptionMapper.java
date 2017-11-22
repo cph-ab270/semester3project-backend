@@ -1,5 +1,7 @@
-package org.cba.rest.error;
+package org.cba.rest.providers.errors;
 
+
+import org.cba.rest.util.ErrorResponse;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;

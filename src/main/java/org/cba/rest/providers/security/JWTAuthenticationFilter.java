@@ -1,4 +1,4 @@
-package org.cba.rest.security;
+package org.cba.rest.providers.security;
 
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSVerifier;

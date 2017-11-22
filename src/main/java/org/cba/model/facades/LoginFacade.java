@@ -1,7 +1,8 @@
-package org.cba.model.facade;
+package org.cba.model.facades;
 
 import org.cba.model.entities.User;
 import org.cba.model.exceptions.ResourceNotFoundException;
+import org.cba.model.util.Hasher;
 
 /**
  * Created by adam on 11/15/2017.

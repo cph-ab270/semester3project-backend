@@ -1,9 +1,10 @@
-package org.cba.model.facade;
+package org.cba.model.facades;
 
 import io.ebean.Ebean;
 import org.cba.model.entities.Role;
 import org.cba.model.entities.User;
 import org.cba.model.exceptions.UsernameNotUniqueException;
+import org.cba.model.util.Hasher;
 
 /**
  * Created by adam on 11/21/2017.
