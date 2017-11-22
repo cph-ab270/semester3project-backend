@@ -5,7 +5,6 @@ import org.cba.rest.cors.CorsResponseFilter;
 import org.cba.rest.error.GenericExceptionMapper;
 import org.cba.rest.error.NotFoundExceptionMapper;
 import org.cba.rest.error.WebApplicationExceptionMapper;
-import org.cba.rest.resources.HelloWorld;
 import org.cba.rest.resources.Login;
 import org.cba.rest.resources.Register;
 import org.cba.rest.resources.RentalResource;
@@ -30,7 +29,6 @@ public class ApplicationConfig extends Application {
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(Login.class);
         resources.add(Register.class);
-        resources.add(HelloWorld.class);
         resources.add(RentalResource.class);
         resources.add(WebApplicationExceptionMapper.class);
         resources.add(GenericExceptionMapper.class);
