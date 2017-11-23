@@ -21,6 +21,7 @@ Click on the "Fix" button in the bottom and choose the option with "exploded" wo
 
 Go to the Startup/Connection tab and setup enviromental variables, here is an example:
 
+    PROP_DB_USER=root
     PROP_DB_PASSWORD=root
     PROP_DB_URL=jdbc:mysql://localhost:3306/cba_sem3project
     PROP_SECRET_TOKEN=h6hFhhYY77765444EEEEvgfdeMnbV30h
