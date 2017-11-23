@@ -34,7 +34,6 @@ public class RentalResource {
         return mapper.writeValueAsString(rental);
     }
 
-    @Path("add")
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
