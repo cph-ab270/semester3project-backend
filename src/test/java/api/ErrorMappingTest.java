@@ -12,7 +12,7 @@ public class ErrorMappingTest extends FunctionalTest {
     public void testWrongMethod() {
         given()
                 .contentType("application/json")
-                .when().post("/rentals").then()
+                .when().post("/rentals/1").then()
                 .statusCode(405);
     }
 
