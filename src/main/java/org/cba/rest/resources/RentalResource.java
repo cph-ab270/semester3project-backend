@@ -46,12 +46,13 @@ public class RentalResource {
         String fileName = fileDisposition.getFileName();
         saveFile(file, fileName);
         RentalFacade rentalFacade = new RentalFacade();
-        Rental rental = rentalFacade.addRental(city, zip, address, description, fileName);
+        String imgHttpPath = System.getenv("PROP_IMG_HTTP_PATH") + fileName;
+        Rental rental = rentalFacade.addRental(city, zip, address, description, imgHttpPath);
         return Response.ok(mapper.writeValueAsString(rental)).build();
     }
 
-    private void saveFile(InputStream is, String fileLocation) throws IOException {
-        String location = System.getenv("PROP_IMG_PATH") + fileLocation;
+    private void saveFile(InputStream is, String fileName) throws IOException {
+        String location = System.getenv("PROP_IMG_PATH") + fileName;
         File file = new File(location);
         OutputStream os = new FileOutputStream(file);
         byte[] buffer = new byte[256];
@@ -59,6 +60,7 @@ public class RentalResource {
         while ((bytes = is.read(buffer)) != -1) {
             os.write(buffer, 0, bytes);
         }
+        is.close();
     }
 }
 
