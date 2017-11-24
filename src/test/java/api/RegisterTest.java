@@ -29,7 +29,7 @@ public class RegisterTest extends FunctionalTest {
     }
 
     @Test
-    public void testDuplicateUsernameRegisterAttempt() {
+    public void testDuplicateUsername() {
         Map<String, String> credentials = new HashMap<>();
         credentials.put("username", "Adam");
         credentials.put("password", "test");

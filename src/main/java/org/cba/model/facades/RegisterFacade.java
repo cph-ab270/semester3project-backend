@@ -1,9 +1,10 @@
-package org.cba.model.facade;
+package org.cba.model.facades;
 
 import io.ebean.Ebean;
 import org.cba.model.entities.Role;
 import org.cba.model.entities.User;
 import org.cba.model.exceptions.UsernameNotUniqueException;
+import org.cba.model.util.Hasher;
 
 /**
  * Created by adam on 11/21/2017.
@@ -11,20 +12,19 @@ import org.cba.model.exceptions.UsernameNotUniqueException;
 public class RegisterFacade {
 
     public User register(String username, String password) throws UsernameNotUniqueException {
-        if (isUsernameUnique(username)) {
-            Hasher hasher = new Hasher();
-            String salt = hasher.generateSalt();
-            String hashedPassword = hasher.hashPassword(password,salt);
-            User user = new User();
-            user.setUsername(username);
-            user.setPassword(hashedPassword);
-            user.setSalt(salt);
-            addBasicUserRole(user);
-            Ebean.save(user);
-            return user;
-        } else {
+        if (!isUsernameUnique(username)) {
             throw new UsernameNotUniqueException();
         }
+        Hasher hasher = new Hasher();
+        String salt = hasher.generateSalt();
+        String hashedPassword = hasher.hashPassword(password, salt);
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(hashedPassword);
+        user.setSalt(salt);
+        addBasicUserRole(user);
+        Ebean.save(user);
+        return user;
     }
 
     private void addBasicUserRole(User user) {
