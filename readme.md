@@ -23,21 +23,29 @@ Go to the Startup/Connection tab and setup enviromental variables, here is an ex
 
     PROP_DB_USER=root
     PROP_DB_PASSWORD=root
+    PROP_DB_REGENERATE=true
+    PROP_DB_SEED_FILE=seedData.sql
     PROP_DB_URL=jdbc:mysql://localhost:3306/cba_sem3project
     PROP_SECRET_TOKEN=h6hFhhYY77765444EEEEvgfdeMnbV30h
+
+
+Instead of the PROP_DB_xxx variables you can add `src/main/resources/local-ebean.properites` which is a ignored file for your local development properties
+Properties in this file overrides the properties in `ebean.properties` so you can use it instead of the ENV vars for database configuration
 
 Now you have a configuration that runs a tomcat server on your PC, deploys your exploded artifact (uncompressed folder with compiled Java sources, libs, resources, etc.) 
 and sets up the environmental variables.
 
+
+
 # Running with docker-compose
 
-Install Docker, create .env in root folder of the project with the environmental variables (example in Running config section)
+Install Docker, create .env in root folder of the project with the environmental variables (example in [Running config in IntelIJ])
 
 run docker-compose up -d
 
-update by docker-compose up --build
+update by docker-compose up
 
-However to update the sources you need to rebuild the exploded artifact (Build tab -> Build artifacts)
+However to update the sources you need to rebuild the exploded artifact (Build tab -> Build artifacts or ctlr+shift+a and type in "build artifacts")
 Because of this, docker-compose is not the recommended way, but I might figure out soon how to automate this.
 The nice think about the docker way is that you'll run the server the exact same way as in Travis and DigitalOcean.
 
