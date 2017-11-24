@@ -8,8 +8,8 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import org.cba.model.entities.User;
 import org.cba.model.exceptions.UsernameNotUniqueException;
-import org.cba.model.facade.RegisterFacade;
-import org.cba.rest.error.ErrorResponse;
+import org.cba.model.facades.RegisterFacade;
+import org.cba.rest.util.ErrorResponse;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;

@@ -1,4 +1,4 @@
-package org.cba.rest.cors;
+package org.cba.rest.providers.cors;
 
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
