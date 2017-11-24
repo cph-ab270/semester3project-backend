@@ -60,6 +60,7 @@ public class RentalResource {
         while ((bytes = is.read(buffer)) != -1) {
             os.write(buffer, 0, bytes);
         }
+        os.close();
         is.close();
     }
 }
