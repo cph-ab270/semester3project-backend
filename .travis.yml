@@ -13,7 +13,7 @@ services:
 
 stages:
   - unit-test
-  - api-test-Deploy
+  - api-test
 
 before_install:
   - env | grep -E '^PROP_' > .env
@@ -28,7 +28,9 @@ jobs:
        - mvn war:exploded
        - docker-compose up -d
        - mvn test -DtestGroup=api -Dserver.port=5001
-       - if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
-          docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
-          docker push fbbc/sem3project-backend;
-          fi
+
+after_success:
+  - if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+    docker push fbbc/sem3project-backend;
+    fi
