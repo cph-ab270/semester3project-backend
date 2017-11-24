@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.6.31, for osx10.6 (i386)
 --
--- Host: 207.154.254.227    Database: sp
+-- Host: 207.154.217.117    Database: cba_sem3project
 -- ------------------------------------------------------
--- Server version	5.7.20-0ubuntu0.16.04.1
+-- Server version	5.6.26
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -14,14 +14,6 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
---
--- Dumping data for table `rental`
---
-
-/*!40000 ALTER TABLE `rental` DISABLE KEYS */;
-INSERT INTO `rental` (`id`, `city`, `zip`, `address`, `description`, `rating`, `image_url`) VALUES (1,'city','zip','address','desc',5,'url'),(2,'city','zip','address','desc',5,'url'),(3,'city','zip','address','desc',5,'url'),(4,'city','zip','address','desc',5,'url'),(5,'city','zip','address','desc',5,'url');
-/*!40000 ALTER TABLE `rental` ENABLE KEYS */;
 
 --
 -- Dumping data for table `role`
@@ -56,4 +48,4 @@ INSERT INTO `user_role` (`user_id`, `role_id`) VALUES (1,1);
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-11-21 22:16:27
+-- Dump completed on 2017-11-24 11:50:55

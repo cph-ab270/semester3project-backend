@@ -1,6 +1,8 @@
 package org.cba.model.entities;
 
 import org.cba.model.entities.finder.RentalFinder;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
@@ -14,6 +16,9 @@ public class Rental {
     private int id;
 
     @NotNull
+    private String title;
+
+    @NotNull
     private String city;
 
     @NotNull
@@ -22,6 +27,8 @@ public class Rental {
     @NotNull
     private String address;
 
+    @Column(columnDefinition = "TEXT")
+    @NotNull
     private String description;
 
     private int rating;
@@ -83,5 +90,13 @@ public class Rental {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

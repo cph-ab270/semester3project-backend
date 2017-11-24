@@ -41,13 +41,14 @@ public class RentalResource {
                               @FormDataParam("zip") String zip,
                               @FormDataParam("address") String address,
                               @FormDataParam("description") String description,
+                              @FormDataParam("title") String title,
                               @FormDataParam("file") InputStream file,
                               @FormDataParam("file") FormDataContentDisposition fileDisposition) throws IOException {
         String fileName = fileDisposition.getFileName();
         saveFile(file, fileName);
         RentalFacade rentalFacade = new RentalFacade();
         String imgHttpPath = System.getenv("PROP_IMG_HTTP_PATH") + fileName;
-        Rental rental = rentalFacade.addRental(city, zip, address, description, imgHttpPath);
+        Rental rental = rentalFacade.addRental(city, zip, address, description, title, imgHttpPath);
         return Response.ok(mapper.writeValueAsString(rental)).build();
     }
 

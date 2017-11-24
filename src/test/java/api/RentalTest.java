@@ -30,11 +30,12 @@ public class RentalTest extends FunctionalTest {
             .when().get("/rentals/1")
                 .then()
                 .body("id", equalTo(1))
+                .body("title", equalTo("title"))
                 .body("city", equalTo("city"))
-                .body("zip", equalTo("zip"))
-                .body("address", equalTo("address"))
+                .body("zip", equalTo("13404"))
+                .body("address", equalTo("some addr"))
                 .body("description", equalTo("desc"))
-                .body("rating", equalTo(5))
+                .body("rating", equalTo(3))
                 .body("imageUrl", equalTo("url"));
 
     }
@@ -47,6 +48,7 @@ public class RentalTest extends FunctionalTest {
         given()
                 .multiPart("file", file)
                 .multiPart("city", "CPH")
+                .multiPart("title", "Title")
                 .multiPart("zip", "2500")
                 .multiPart("address", "Kjeldsgaardsvej 27C")
                 .multiPart("description", "Great environment")
