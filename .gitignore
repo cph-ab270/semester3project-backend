@@ -11,3 +11,4 @@ gen
 /src/test/resources/logback-test.xml
 log/
 /.env
+/src/main/resources/local-ebean.properties
