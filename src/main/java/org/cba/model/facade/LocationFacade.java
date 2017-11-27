@@ -4,7 +4,7 @@ import io.ebean.Ebean;
 import io.ebean.Query;
 import io.ebean.RawSql;
 import io.ebean.RawSqlBuilder;
-import org.cba.model.entities.Place;
+import org.cba.model.entities.Location;
 import org.cba.model.entities.Rental;
 
 import java.util.List;
@@ -12,8 +12,8 @@ import java.util.List;
 /**
  * Created by adam on 27/11/2017.
  */
-public class PlaceFacade {
-    public List<Place> findPlacesCloseToRental(Rental rental, float searchRadius) {
+public class LocationFacade {
+    public List<Location> findPlacesCloseToRental(Rental rental, float searchRadius) {
         int earthRadius = 6371;
         double radLat = Math.toRadians(rental.getLatitude());
         double radLon = Math.toRadians(rental.getLongitude());
@@ -24,7 +24,7 @@ public class PlaceFacade {
 
         String sql = "SELECT id,title,description,image_url,latitude,longitude, " +
                 "acos(sin(" + radLat + ")*sin(radians(latitude)) + cos(" + radLat + ") * cos(radians(latitude))*cos(radians(longitude)-" + radLon + ")) * " + earthRadius + " AS distance " +
-                "FROM place " +
+                "FROM location " +
                 "WHERE latitude BETWEEN " + minLat + " AND " + maxLat + " " +
                 "AND longitude BETWEEN " + minLon + " AND " + maxLon + " " +
                 "HAVING distance < " + searchRadius + " " +
@@ -35,7 +35,7 @@ public class PlaceFacade {
                         .columnMappingIgnore("distance")
                         .create();
 
-        Query<Place> query = Ebean.find(Place.class);
+        Query<Location> query = Ebean.find(Location.class);
         query.setRawSql(rawSql);
         return query.findList();
     }

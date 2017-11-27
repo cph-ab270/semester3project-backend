@@ -2,7 +2,9 @@ package org.cba.rest.resources;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.cba.model.entities.Location;
 import org.cba.model.entities.Rental;
+import org.cba.model.facade.LocationFacade;
 import org.cba.model.facade.RentalFacade;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
@@ -63,6 +65,17 @@ public class RentalResource {
         }
         os.close();
         is.close();
+    }
+
+    @GET
+    @Path("{rentalId}/near-locations{p:/?}{radius : (\\d+)?}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getLocationsNearRental(@PathParam("rentalId") int rentalId,
+                                         @DefaultValue("5") @PathParam("radius") int radius) throws JsonProcessingException {
+        Rental rental = Rental.find.byId(rentalId);
+        LocationFacade locationFacade = new LocationFacade();
+        List<Location> locations = locationFacade.findPlacesCloseToRental(rental, radius);
+        return mapper.writeValueAsString(locations);
     }
 }
 

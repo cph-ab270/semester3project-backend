@@ -24,12 +24,12 @@ INSERT INTO `role` (`id`, `name`) VALUES (1,'User'),(2,'Admin');
 /*!40000 ALTER TABLE `role` ENABLE KEYS */;
 
 --
--- Dumping data for table `place`
+-- Dumping data for table `location`
 --
 
-/*!40000 ALTER TABLE `place` DISABLE KEYS */;
-INSERT INTO `place` (`id`, `title`, `description`, `rating`, `image_url`, `latitude`, `longitude`) VALUES (1,'some place','nice',1,'url',50.506144,9.20091);
-/*!40000 ALTER TABLE `place` ENABLE KEYS */;
+/*!40000 ALTER TABLE `location` DISABLE KEYS */;
+INSERT INTO `location` (`id`, `title`, `description`, `image_url`, `latitude`, `longitude`) VALUES (1,'some location','nice','url',63.506144,9.20091);
+/*!40000 ALTER TABLE `location` ENABLE KEYS */;
 
 --
 -- Dumping data for table `user`

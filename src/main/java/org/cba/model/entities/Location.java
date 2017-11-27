@@ -1,6 +1,6 @@
 package org.cba.model.entities;
 
-import org.cba.model.entities.finder.PlaceFinder;
+import org.cba.model.entities.finder.LocationFinder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,9 +11,9 @@ import javax.validation.constraints.NotNull;
  * Created by adam on 27/11/2017.
  */
 @Entity
-public class Place {
+public class Location {
 
-    public static final PlaceFinder find = new PlaceFinder();
+    public static final LocationFinder find = new LocationFinder();
 
     @Id
     private int id;
@@ -24,8 +24,6 @@ public class Place {
     @Column(columnDefinition = "TEXT")
     @NotNull
     private String description;
-
-    private int rating;
 
     @NotNull
     private String imageUrl;
@@ -56,14 +54,6 @@ public class Place {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public int getRating() {
-        return rating;
-    }
-
-    public void setRating(int rating) {
-        this.rating = rating;
     }
 
     public String getImageUrl() {
