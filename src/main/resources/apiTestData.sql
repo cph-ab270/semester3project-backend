@@ -1,8 +1,8 @@
 -- MySQL dump 10.13  Distrib 5.6.31, for osx10.6 (i386)
 --
--- Host: 207.154.217.117    Database: cba_sem3project
+-- Host: 127.0.0.1    Database: cba_sem3project
 -- ------------------------------------------------------
--- Server version	5.6.26
+-- Server version	5.7.19
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -32,21 +32,27 @@ INSERT INTO `user` (`id`, `username`, `password`, `salt`) VALUES (1,'Adam','4986
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 --
--- Dumping data for table `rental`
+-- Dumping data for table `location`
 --
 
-/*!40000 ALTER TABLE `rental` DISABLE KEYS */;
-INSERT INTO cba_sem3project.rental (title, city, zip, address, description, rating, image_url) VALUES ('title', 'city', '13404', 'some addr', 'desc', 3, 'url');
-INSERT INTO cba_sem3project.rental (title, city, zip, address, description, rating, image_url) VALUES ('Title', 'CPH', '2500', 'Kjeldsgaardsvej 27C', 'Great environment', 0, 'nulldownload.jpg');;
-/*!40000 ALTER TABLE `rental` ENABLE KEYS */;
+/*!40000 ALTER TABLE `location` DISABLE KEYS */;
+INSERT INTO `location` (`id`, `title`, `description`, `image_url`, `latitude`, `longitude`) VALUES (1,'some location','nice','url',63.506144,9.20091),(2,'some location','nice','url',61.506144,9.20091);
+/*!40000 ALTER TABLE `location` ENABLE KEYS */;
 
 --
 -- Dumping data for table `user_role`
 --
 
 /*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
-INSERT INTO `user_role` (`user_id`, `role_id`) VALUES (1,1);
 /*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
+
+--
+-- Dumping data for table `rental`
+--
+
+/*!40000 ALTER TABLE `rental` DISABLE KEYS */;
+INSERT INTO `rental` (`id`, `title`, `city`, `zip`, `address`, `description`, `rating`, `image_url`, `latitude`, `longitude`) VALUES (1,'title','city','13404','some addr','desc',3,'url',63.506144,9.20091),(2,'Title','CPH','2500','Kjeldsgaardsvej 27C','Great environment',0,'nulldownload.jpg',64.506144,9.20091);
+/*!40000 ALTER TABLE `rental` ENABLE KEYS */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -57,4 +63,4 @@ INSERT INTO `user_role` (`user_id`, `role_id`) VALUES (1,1);
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-11-24 11:50:55
+-- Dump completed on 2017-11-27 13:12:33

@@ -24,14 +24,6 @@ INSERT INTO `role` (`id`, `name`) VALUES (1,'User'),(2,'Admin');
 /*!40000 ALTER TABLE `role` ENABLE KEYS */;
 
 --
--- Dumping data for table `location`
---
-
-/*!40000 ALTER TABLE `location` DISABLE KEYS */;
-INSERT INTO `location` (`id`, `title`, `description`, `image_url`, `latitude`, `longitude`) VALUES (1,'some location','nice','url',63.506144,9.20091);
-/*!40000 ALTER TABLE `location` ENABLE KEYS */;
-
---
 -- Dumping data for table `user`
 --
 
@@ -40,12 +32,12 @@ INSERT INTO `user` (`id`, `username`, `password`, `salt`) VALUES (1,'Adam','4986
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 --
--- Dumping data for table `rental`
+-- Dumping data for table `location`
 --
 
-/*!40000 ALTER TABLE `rental` DISABLE KEYS */;
-INSERT INTO `rental` (`id`, `title`, `city`, `zip`, `address`, `description`, `rating`, `image_url`, `latitude`, `longitude`) VALUES (1,'title','city','13404','some addr','desc',3,'url',63.506144,9.20091),(2,'Title','CPH','2500','Kjeldsgaardsvej 27C','Great environment',0,'nulldownload.jpg',64.506144,9.20091);
-/*!40000 ALTER TABLE `rental` ENABLE KEYS */;
+/*!40000 ALTER TABLE `location` DISABLE KEYS */;
+INSERT INTO `location` (`id`, `title`, `description`, `image_url`, `latitude`, `longitude`) VALUES (1,'some location','nice','url',63.506144,9.20091),(2,'some location','nice','url',61.506144,9.20091);
+/*!40000 ALTER TABLE `location` ENABLE KEYS */;
 
 --
 -- Dumping data for table `user_role`
@@ -53,6 +45,14 @@ INSERT INTO `rental` (`id`, `title`, `city`, `zip`, `address`, `description`, `r
 
 /*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
 /*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
+
+--
+-- Dumping data for table `rental`
+--
+
+/*!40000 ALTER TABLE `rental` DISABLE KEYS */;
+INSERT INTO `rental` (`id`, `title`, `city`, `zip`, `address`, `description`, `rating`, `image_url`, `latitude`, `longitude`) VALUES (1,'title','city','13404','some addr','desc',3,'url',63.506144,9.20091),(2,'Title','CPH','2500','Kjeldsgaardsvej 27C','Great environment',0,'nulldownload.jpg',64.506144,9.20091);
+/*!40000 ALTER TABLE `rental` ENABLE KEYS */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -63,4 +63,4 @@ INSERT INTO `rental` (`id`, `title`, `city`, `zip`, `address`, `description`, `r
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-11-27 10:39:55
+-- Dump completed on 2017-11-27 13:12:33
