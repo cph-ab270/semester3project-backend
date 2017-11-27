@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class Rental {
 
-  public static final RentalFinder find = new RentalFinder();
+    public static final RentalFinder find = new RentalFinder();
 
     @Id
     private int id;
@@ -35,6 +35,26 @@ public class Rental {
 
     @NotNull
     private String imageUrl;
+
+    private Double latitude;
+
+    private Double longitude;
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
 
     public int getId() {
         return id;
