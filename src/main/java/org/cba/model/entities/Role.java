@@ -1,6 +1,7 @@
 package org.cba.model.entities;
 
 import org.cba.model.entities.finder.RoleFinder;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -10,7 +11,7 @@ import javax.persistence.Id;
 @Entity
 public class Role {
 
-  public static final RoleFinder find = new RoleFinder();
+    public static final RoleFinder find = new RoleFinder();
     @Id
     private int id;
     private String name;

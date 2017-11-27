@@ -2,8 +2,11 @@ package org.cba.rest.resources;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.cba.model.entities.Location;
 import org.cba.model.entities.Rental;
+import org.cba.model.facade.LocationFacade;
 import org.cba.model.facade.RentalFacade;
+import org.cba.rest.util.FileUploader;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
@@ -42,27 +45,26 @@ public class RentalResource {
                               @FormDataParam("address") String address,
                               @FormDataParam("description") String description,
                               @FormDataParam("title") String title,
+                              @FormDataParam("latitude") Double latitude,
+                              @FormDataParam("longitude") Double longitude,
                               @FormDataParam("file") InputStream file,
                               @FormDataParam("file") FormDataContentDisposition fileDisposition) throws IOException {
-        String fileName = fileDisposition.getFileName();
-        saveFile(file, fileName);
+        FileUploader fileUploader = new FileUploader();
+        String imgHttpPath = fileUploader.uploadFile(file, fileDisposition);
         RentalFacade rentalFacade = new RentalFacade();
-        String imgHttpPath = System.getenv("PROP_IMG_HTTP_PATH") + fileName;
-        Rental rental = rentalFacade.addRental(city, zip, address, description, title, imgHttpPath);
+        Rental rental = rentalFacade.addRental(city, zip, address, description, title, imgHttpPath, latitude, longitude);
         return Response.ok(mapper.writeValueAsString(rental)).build();
     }
 
-    private void saveFile(InputStream is, String fileName) throws IOException {
-        String location = System.getenv("PROP_IMG_PATH") + fileName;
-        File file = new File(location);
-        OutputStream os = new FileOutputStream(file);
-        byte[] buffer = new byte[256];
-        int bytes;
-        while ((bytes = is.read(buffer)) != -1) {
-            os.write(buffer, 0, bytes);
-        }
-        os.close();
-        is.close();
+    @GET
+    @Path("{rentalId}/near-locations{p:/?}{radius : (\\d+)?}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getLocationsNearRental(@PathParam("rentalId") int rentalId,
+                                         @DefaultValue("5") @PathParam("radius") int radius) throws JsonProcessingException {
+        Rental rental = Rental.find.byId(rentalId);
+        LocationFacade locationFacade = new LocationFacade();
+        List<Location> locations = locationFacade.findPlacesCloseToRental(rental, radius);
+        return mapper.writeValueAsString(locations);
     }
 }
 

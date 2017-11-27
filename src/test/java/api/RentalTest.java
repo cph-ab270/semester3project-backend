@@ -18,7 +18,7 @@ public class RentalTest extends FunctionalTest {
         given()
                 .contentType("application/json")
                 .when().get("/rentals").then()
-                .body("id",hasItems(1,2))
+                .body("id", hasItems(1, 2))
                 .body("city", hasItems("city", "city"));
     }
 
@@ -26,8 +26,8 @@ public class RentalTest extends FunctionalTest {
     public void testSuccessfulGetSingleRental() {
 
         given()
-            .contentType("application/json")
-            .when().get("/rentals/1")
+                .contentType("application/json")
+                .when().get("/rentals/1")
                 .then()
                 .body("id", equalTo(1))
                 .body("title", equalTo("title"))
@@ -52,15 +52,39 @@ public class RentalTest extends FunctionalTest {
                 .multiPart("zip", "2500")
                 .multiPart("address", "Kjeldsgaardsvej 27C")
                 .multiPart("description", "Great environment")
+                .multiPart("latitude", 60)
+                .multiPart("longitude", 10)
                 .when().post("/rentals").then()
                 .body("id", notNullValue())
                 .body("city", equalTo("CPH"))
                 .body("zip", equalTo("2500"))
                 .body("address", equalTo("Kjeldsgaardsvej 27C"))
                 .body("description", equalTo("Great environment"))
+                .body("latitude", equalTo(60f))
+                .body("longitude", equalTo(10f))
                 .body("imageUrl", endsWith("download.jpg"));
 
-        }
     }
+
+    @Test
+    public void testFindNearbyLocationsWithDefaultRadius() throws FileNotFoundException {
+        given()
+                .contentType("application/json")
+                .when().get("/rentals/1/near-locations")
+                .then()
+                .body("id", hasItems(1));
+
+    }
+
+    @Test
+    public void testFindNearbyLocationsWithCustomRadius() throws FileNotFoundException {
+        given()
+                .contentType("application/json")
+                .when().get("/rentals/1/near-locations/400")
+                .then()
+                .body("id", hasItems(1,2));
+
+    }
+}
 
 
