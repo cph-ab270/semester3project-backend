@@ -15,7 +15,7 @@ import org.cba.model.entities.User;
 import org.cba.model.exceptions.ResourceNotFoundException;
 import org.cba.model.facades.LoginFacade;
 import org.cba.rest.util.ErrorResponse;
-import org.jetbrains.annotations.NotNull;
+import org.cba.rest.util.TokenGenerator;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -45,7 +45,8 @@ public class Login {
         LoginFacade loginFacade = new LoginFacade();
         try {
             User user = loginFacade.authenticateUser(username,password);
-            String token = createToken(user);
+            TokenGenerator tokenGenerator = new TokenGenerator();
+            String token = tokenGenerator.generateToken(user);
             ObjectNode resultJson = objectMapper.createObjectNode();
             resultJson.put("username", username);
             resultJson.put("token", token);
@@ -53,35 +54,5 @@ public class Login {
         } catch (ResourceNotFoundException | LoginFacade.IncorrectPasswordException e) {
             return new ErrorResponse(400,"Username or password is incorrect!").build();
         }
-    }
-
-    private String createToken(User user) throws JOSEException {
-        List<String> roles = getRolesAsStringList(user);
-        String issuer = "semester3project-fbbc";
-
-        JWSSigner signer = new MACSigner(System.getenv("PROP_SECRET_TOKEN"));
-        Date now = new Date();
-        Date after7Days = new Date(now.getTime() + 1000 * 60 * 60 * 24 * 7);
-        JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
-                .subject(user.getUsername())
-                .claim("username", user.getUsername())
-                .claim("id", user.getId())
-                .claim("roles", roles)
-                .claim("issuer", issuer)
-                .issueTime(now)
-                .expirationTime(after7Days)
-                .build();
-        SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), claimsSet);
-        signedJWT.sign(signer);
-        return signedJWT.serialize();
-    }
-
-    @NotNull
-    private List<String> getRolesAsStringList(User user) {
-        List<String> list = new ArrayList<>();
-        for (Role role : user.getRoles()) {
-            list.add(role.getName());
-        }
-        return list;
     }
 }

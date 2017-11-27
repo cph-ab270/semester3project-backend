@@ -1,15 +1,14 @@
 package org.cba.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import org.cba.model.entities.finder.RentalFinder;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonFilter("RentalRatingFilter")
 @Entity
 public class Rental {
 
@@ -41,11 +40,21 @@ public class Rental {
 
     private Double longitude;
 
-    @OneToMany(mappedBy="rental")
-    private List<Rating> rating = new ArrayList<>();
+    @OneToMany(mappedBy = "rental")
+    private List<Rating> ratings = new ArrayList<>();
 
-    public List<Rating> getRating() {
-        return rating;
+    public List<Rating> getRatings() {
+        return ratings;
+    }
+
+    @Transient
+    public int getRating() {
+        if (this.getRatings().size() == 0) return 0;
+        int totalPoints = 0;
+        for (Rating rating : this.getRatings()) {
+            totalPoints += rating.getRating();
+        }
+        return totalPoints / this.getRatings().size();
     }
 
     public Double getLatitude() {
