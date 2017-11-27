@@ -3,10 +3,9 @@ package org.cba.model.entities;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import org.cba.model.entities.finder.UserFinder;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +14,7 @@ import java.util.List;
  */
 @JsonFilter("SimpleUserFilter")
 @Entity
-public class User {
+public class User implements Principal{
 
     public static final UserFinder find = new UserFinder();
     @Id
@@ -31,7 +30,7 @@ public class User {
     private String salt;
 
     @ManyToMany
-    List<Role> roles = new ArrayList<>();
+    private List<Role> roles = new ArrayList<>();
 
     public List<Role> getRoles() {
         return roles;
@@ -67,5 +66,10 @@ public class User {
 
     public void setSalt(String salt) {
         this.salt = salt;
+    }
+
+    @Override
+    public String getName() {
+        return username;
     }
 }

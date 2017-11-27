@@ -5,7 +5,10 @@ import org.cba.model.entities.finder.RentalFinder;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Rental {
@@ -31,14 +34,19 @@ public class Rental {
     @NotNull
     private String description;
 
-    private int rating;
-
     @NotNull
     private String imageUrl;
 
     private Double latitude;
 
     private Double longitude;
+
+    @OneToMany(mappedBy="rental")
+    private List<Rating> rating = new ArrayList<>();
+
+    public List<Rating> getRating() {
+        return rating;
+    }
 
     public Double getLatitude() {
         return latitude;
@@ -94,14 +102,6 @@ public class Rental {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public int getRating() {
-        return rating;
-    }
-
-    public void setRating(int rating) {
-        this.rating = rating;
     }
 
     public String getImageUrl() {

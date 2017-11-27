@@ -65,6 +65,7 @@ public class Login {
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
                 .subject(user.getUsername())
                 .claim("username", user.getUsername())
+                .claim("id", user.getId())
                 .claim("roles", roles)
                 .claim("issuer", issuer)
                 .issueTime(now)

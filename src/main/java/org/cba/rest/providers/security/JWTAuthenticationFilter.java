@@ -4,6 +4,8 @@ import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSVerifier;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.SignedJWT;
+import org.cba.model.entities.Role;
+import org.cba.model.entities.User;
 
 import javax.annotation.Priority;
 import javax.annotation.security.DenyAll;
@@ -49,12 +51,15 @@ public class JWTAuthenticationFilter implements ContainerRequestFilter {
                     throw new NotAuthorizedException("Your authorization token has timed out, please login again", Response.Status.UNAUTHORIZED);
                 }
 
-                final UserPrincipal userPrincipal = getUserPrincipalFromToken(token);
+                final User userPrincipal = getUserFromToken(token);
                 request.setSecurityContext(new SecurityContext() {
 
                     @Override
                     public boolean isUserInRole(String role) {
-                        return userPrincipal.isUserInRole(role);
+                        for (Role role1 : userPrincipal.getRoles()) {
+                            if (role1.getName().equals(role)) return true;
+                        }
+                        return false;
                     }
 
                     @Override
@@ -113,36 +118,15 @@ public class JWTAuthenticationFilter implements ContainerRequestFilter {
         return false;
     }
 
-    private UserPrincipal getUserPrincipalFromToken(String token) throws ParseException, JOSEException {
+    private User getUserFromToken(String token) throws ParseException, JOSEException {
         SignedJWT signedJWT = SignedJWT.parse(token);
         JWSVerifier verifier = new MACVerifier(System.getenv("PROP_SECRET_TOKEN"));
 
         if (signedJWT.verify(verifier)) {
-            String username = signedJWT.getJWTClaimsSet().getSubject();
-            List<String> roles = signedJWT.getJWTClaimsSet().getStringListClaim("roles");
-            return new UserPrincipal(username,roles);
+            int userId = signedJWT.getJWTClaimsSet().getIntegerClaim("id");
+            return User.find.byId(userId);
         } else {
             throw new JOSEException("Firm is not verified.");
-        }
-    }
-
-    class UserPrincipal implements Principal {
-        private String username;
-        private List<String> roles;
-
-        public UserPrincipal(String username, List<String> roles) {
-            super();
-            this.username = username;
-            this.roles = roles;
-        }
-
-        @Override
-        public String getName() {
-            return username;
-        }
-
-        public boolean isUserInRole(String checkedRole) {
-            return roles.contains(checkedRole);
         }
     }
 }

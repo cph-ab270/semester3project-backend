@@ -52,7 +52,7 @@ INSERT INTO `user_role` (`user_id`, `role_id`) VALUES (1,1);
 --
 
 /*!40000 ALTER TABLE `rental` DISABLE KEYS */;
-INSERT INTO `rental` (`id`, `title`, `city`, `zip`, `address`, `description`, `rating`, `image_url`, `latitude`, `longitude`) VALUES (1,'title','city','13404','some addr','desc',3,'url',63.506144,9.20091),(2,'Title','CPH','2500','Kjeldsgaardsvej 27C','Great environment',0,'nulldownload.jpg',64.506144,9.20091);
+INSERT INTO `rental` (`id`, `title`, `city`, `zip`, `address`, `description`, `image_url`, `latitude`, `longitude`) VALUES (1,'title','city','13404','some addr','desc','url',63.506144,9.20091),(2,'Title','CPH','2500','Kjeldsgaardsvej 27C','Great environment','nulldownload.jpg',64.506144,9.20091);
 /*!40000 ALTER TABLE `rental` ENABLE KEYS */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

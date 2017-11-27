@@ -14,7 +14,7 @@ import static org.hamcrest.Matchers.notNullValue;
  */
 public class LocationTest extends FunctionalTest{
     @Test
-    public void testSuccessfulGetAllRentals() {
+    public void testSuccessfulGetAllLocations() {
 
         given()
                 .contentType("application/json")
@@ -23,7 +23,7 @@ public class LocationTest extends FunctionalTest{
     }
 
     @Test
-    public void testSuccessfulGetSingleRental() {
+    public void testSuccessfulGetSingleLocation() {
 
         given()
                 .contentType("application/json")
@@ -34,7 +34,7 @@ public class LocationTest extends FunctionalTest{
     }
 
     @Test
-    public void testSuccessfulAddNewRental() throws FileNotFoundException {
+    public void testSuccessfulAddNewLocation() throws FileNotFoundException {
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(classLoader.getResource("download.jpg").getFile());
 

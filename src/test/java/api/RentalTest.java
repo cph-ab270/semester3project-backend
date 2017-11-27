@@ -35,7 +35,6 @@ public class RentalTest extends FunctionalTest {
                 .body("zip", equalTo("13404"))
                 .body("address", equalTo("some addr"))
                 .body("description", equalTo("desc"))
-                .body("rating", equalTo(3))
                 .body("imageUrl", equalTo("url"));
 
     }
