@@ -2,7 +2,7 @@ package org.cba.model.entities.finder;
 
 import io.ebean.Finder;
 import org.cba.model.entities.Location;
-import org.cba.model.entities.query.QPlace;
+import org.cba.model.entities.query.QLocation;
 
 public class LocationFinder extends Finder<Integer,Location> {
 
@@ -23,14 +23,14 @@ public class LocationFinder extends Finder<Integer,Location> {
   /**
    * Start a new typed query.
    */
-  public QPlace where() {
-     return new QPlace(db());
+  public QLocation where() {
+     return new QLocation(db());
   }
 
   /**
    * Start a new document store query.
    */
-  public QPlace text() {
-     return new QPlace(db()).text();
+  public QLocation text() {
+     return new QLocation(db()).text();
   }
 }
