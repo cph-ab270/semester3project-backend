@@ -44,6 +44,7 @@ INSERT INTO `location` (`id`, `title`, `description`, `image_url`, `latitude`, `
 --
 
 /*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
+INSERT INTO `user_role` (`user_id`, `role_id`) VALUES (1,1);
 /*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
 
 --
