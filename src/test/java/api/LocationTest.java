@@ -2,14 +2,17 @@ package api;
 
 import org.junit.Test;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+
 import static com.jayway.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.Matchers.notNullValue;
 
 /**
  * Created by adam on 27/11/2017.
  */
-public class LocationTest {
+public class LocationTest extends FunctionalTest{
     @Test
     public void testSuccessfulGetAllRentals() {
 
@@ -28,5 +31,26 @@ public class LocationTest {
                 .then()
                 .body("id", equalTo(1))
                 .body("title", equalTo("some location"));
+    }
+
+    @Test
+    public void testSuccessfulAddNewRental() throws FileNotFoundException {
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource("download.jpg").getFile());
+
+        given()
+                .multiPart("file", file)
+                .multiPart("title", "Title")
+                .multiPart("description", "Great environment")
+                .multiPart("latitude", 60.0)
+                .multiPart("longitude", 10.0)
+                .when().post("/locations").then()
+                .body("id", notNullValue())
+                .body("description", equalTo("Great environment"))
+                .body("title", equalTo("Title"))
+                .body("imageUrl", endsWith("download.jpg"))
+                .body("latitude", is(60f))
+                .body("longitude", is(10f));
+
     }
 }

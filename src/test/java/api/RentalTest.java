@@ -52,12 +52,16 @@ public class RentalTest extends FunctionalTest {
                 .multiPart("zip", "2500")
                 .multiPart("address", "Kjeldsgaardsvej 27C")
                 .multiPart("description", "Great environment")
+                .multiPart("latitude", 60)
+                .multiPart("longitude", 10)
                 .when().post("/rentals").then()
                 .body("id", notNullValue())
                 .body("city", equalTo("CPH"))
                 .body("zip", equalTo("2500"))
                 .body("address", equalTo("Kjeldsgaardsvej 27C"))
                 .body("description", equalTo("Great environment"))
+                .body("latitude", equalTo(60f))
+                .body("longitude", equalTo(10f))
                 .body("imageUrl", endsWith("download.jpg"));
 
     }

@@ -39,4 +39,15 @@ public class LocationFacade {
         query.setRawSql(rawSql);
         return query.findList();
     }
+
+    public Location addLocation(String title, String description, Double latitude, Double longitude, String image) {
+        Location location = new Location();
+        location.setDescription(description);
+        location.setTitle(title);
+        location.setImageUrl(image);
+        location.setLatitude(latitude);
+        location.setLongitude(longitude);
+        Ebean.save(location);
+        return location;
+    }
 }
