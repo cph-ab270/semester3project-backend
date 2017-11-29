@@ -43,11 +43,19 @@ public class BookingTest extends FunctionalTest{
     }
 
     @Test(priority = 1)
-    public void testGetAllBooking() throws JOSEException {
+    public void testGetRentalBooking() throws JOSEException {
         given()
                 .contentType("application/json")
                 .when().get("/rentals/1/booking").then()
                 .body("userName", hasItem("User"))
                 .body("week", hasItem("2017-W44"));
+    }
+
+    @Test
+    public void testGetNonExistentRentalBooking() throws JOSEException {
+        given()
+                .contentType("application/json")
+                .when().get("/rentals/10/booking").then()
+                .statusCode(404);
     }
 }
