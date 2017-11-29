@@ -61,7 +61,7 @@ public class RentalResource {
     }
 
     @POST
-    @RolesAllowed({"User","Admin"})
+    @RolesAllowed({"Admin"})
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addRental(@FormDataParam("city") String city,
