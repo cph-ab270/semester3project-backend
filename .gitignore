@@ -12,3 +12,4 @@ gen
 log/
 /.env
 /src/main/resources/local-ebean.properties
+/img/

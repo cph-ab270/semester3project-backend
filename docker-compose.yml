@@ -9,6 +9,8 @@ services:
      - 5001:8080
     depends_on:
      - mysql
+    volumes:
+     - ./img:/home/img
 
   mysql:
     image: mysql:5.6.26

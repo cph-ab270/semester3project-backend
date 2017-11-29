@@ -43,6 +43,13 @@ public class Rental {
     @OneToMany(mappedBy = "rental")
     private List<Rating> ratings = new ArrayList<>();
 
+    @OneToMany(mappedBy = "rental")
+    private List<Booking> bookings = new ArrayList<>();
+
+    public List<Booking> getBookings() {
+        return bookings;
+    }
+
     public List<Rating> getRatings() {
         return ratings;
     }

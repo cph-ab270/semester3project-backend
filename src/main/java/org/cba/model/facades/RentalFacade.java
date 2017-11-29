@@ -1,4 +1,4 @@
-package org.cba.model.facade;
+package org.cba.model.facades;
 
 import io.ebean.Ebean;
 import org.cba.model.entities.Rental;
