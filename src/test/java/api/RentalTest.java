@@ -47,7 +47,7 @@ public class RentalTest extends FunctionalTest {
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(classLoader.getResource("download.jpg").getFile());
 
-        String token = getAuthToken();
+        String token = getAuthToken("Admin");
         given()
                 .multiPart("file", file)
                 .multiPart("city", "CPH")
@@ -109,7 +109,7 @@ public class RentalTest extends FunctionalTest {
 
     @Test(priority = 1)
     public void testUpdateRating() throws JOSEException {
-        String token = getAuthToken();
+        String token = getAuthToken("User");
 
         Map<String, Integer> data = new HashMap<>();
         data.put("rating", 3);

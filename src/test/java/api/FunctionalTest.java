@@ -39,9 +39,9 @@ public abstract class FunctionalTest {
 
     }
 
-    protected String getAuthToken() {
+    protected String getAuthToken(String userName) {
         Map<String, String> credentials = new HashMap<>();
-        credentials.put("username", "User");
+        credentials.put("username", userName);
         credentials.put("password", "test");
 
         Response response = given()

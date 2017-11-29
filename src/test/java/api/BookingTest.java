@@ -15,7 +15,7 @@ import static org.hamcrest.CoreMatchers.hasItem;
 public class BookingTest extends FunctionalTest{
     @Test
     public void testSuccessfulBooking() throws JOSEException {
-        String token = getAuthToken();
+        String token = getAuthToken("User");
 
         Map<String, String> data = new HashMap<>();
         data.put("week", "2017-W44");
@@ -30,7 +30,7 @@ public class BookingTest extends FunctionalTest{
 
     @Test(priority = 1)
     public void testTakenBooking() throws JOSEException {
-        String token = getAuthToken();
+        String token = getAuthToken("User");
 
         Map<String, String> data = new HashMap<>();
         data.put("week", "2017-W44");

@@ -38,7 +38,7 @@ public class LocationTest extends FunctionalTest{
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(classLoader.getResource("download.jpg").getFile());
 
-        String token = getAuthToken();
+        String token = getAuthToken("User");
         given()
                 .multiPart("file", file)
                 .multiPart("title", "Title")
