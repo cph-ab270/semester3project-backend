@@ -16,44 +16,52 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Dumping data for table `role`
+-- Dumping data for table `rental`
 --
 
-/*!40000 ALTER TABLE `role` DISABLE KEYS */;
-INSERT INTO `role` (`id`, `name`) VALUES (1,'User'),(2,'Admin');
-/*!40000 ALTER TABLE `role` ENABLE KEYS */;
+/*!40000 ALTER TABLE `rental` DISABLE KEYS */;
+INSERT INTO `rental` (`id`, `title`, `city`, `zip`, `address`, `description`, `image_url`, `latitude`, `longitude`) VALUES (1,'title','city','13404','some addr','desc','url',63.506144,9.20091),(2,'Title','CPH','2500','Kjeldsgaardsvej 27C','Great environment','nulldownload.jpg',64.506144,9.20091),(3,'Title','CPH','2500','Kjeldsgaardsvej 27C','Great environment','nulldownload.jpg',60,10);
+/*!40000 ALTER TABLE `rental` ENABLE KEYS */;
 
 --
 -- Dumping data for table `user`
 --
 
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` (`id`, `username`, `password`, `salt`) VALUES (1,'Adam','498686f70928c6f3dfd4e5288bf38b7b0ca789a5e933f6893c5398fbca8452e4','320927329287754881270722666944861037179');
+INSERT INTO `user` (`id`, `username`, `password`, `salt`) VALUES (1,'User','498686f70928c6f3dfd4e5288bf38b7b0ca789a5e933f6893c5398fbca8452e4','320927329287754881270722666944861037179'),(2,'Admin','498686f70928c6f3dfd4e5288bf38b7b0ca789a5e933f6893c5398fbca8452e4','320927329287754881270722666944861037179');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 --
--- Dumping data for table `location`
+-- Dumping data for table `rating`
 --
 
-/*!40000 ALTER TABLE `location` DISABLE KEYS */;
-INSERT INTO `location` (`id`, `title`, `description`, `image_url`, `latitude`, `longitude`) VALUES (1,'some location','nice','url',63.506144,9.20091),(2,'some location','nice','url',61.506144,9.20091);
-/*!40000 ALTER TABLE `location` ENABLE KEYS */;
+/*!40000 ALTER TABLE `rating` DISABLE KEYS */;
+INSERT INTO `rating` (`id`, `user_id`, `rental_id`, `rating`) VALUES (1,1,1,5);
+/*!40000 ALTER TABLE `rating` ENABLE KEYS */;
 
 --
 -- Dumping data for table `user_role`
 --
 
 /*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
-INSERT INTO `user_role` (`user_id`, `role_id`) VALUES (1,1);
+INSERT INTO `user_role` (`user_id`, `role_id`) VALUES (1,1),(2,2);
 /*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
 
 --
--- Dumping data for table `rental`
+-- Dumping data for table `location`
 --
 
-/*!40000 ALTER TABLE `rental` DISABLE KEYS */;
-INSERT INTO `rental` (`id`, `title`, `city`, `zip`, `address`, `description`, `image_url`, `latitude`, `longitude`) VALUES (1,'title','city','13404','some addr','desc','url',63.506144,9.20091),(2,'Title','CPH','2500','Kjeldsgaardsvej 27C','Great environment','nulldownload.jpg',64.506144,9.20091);
-/*!40000 ALTER TABLE `rental` ENABLE KEYS */;
+/*!40000 ALTER TABLE `location` DISABLE KEYS */;
+INSERT INTO `location` (`id`, `title`, `description`, `image_url`, `latitude`, `longitude`) VALUES (1,'some location','nice','url',63.506144,9.20091),(2,'some location','nice','url',61.506144,9.20091),(3,'Title','Great environment','nulldownload.jpg',60,10);
+/*!40000 ALTER TABLE `location` ENABLE KEYS */;
+
+--
+-- Dumping data for table `role`
+--
+
+/*!40000 ALTER TABLE `role` DISABLE KEYS */;
+INSERT INTO `role` (`id`, `name`) VALUES (1,'User'),(2,'Admin');
+/*!40000 ALTER TABLE `role` ENABLE KEYS */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -64,4 +72,4 @@ INSERT INTO `rental` (`id`, `title`, `city`, `zip`, `address`, `description`, `i
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-11-27 13:12:33
+-- Dump completed on 2017-11-29 13:11:53

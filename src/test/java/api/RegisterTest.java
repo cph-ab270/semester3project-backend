@@ -1,6 +1,6 @@
 package api;
 
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +31,7 @@ public class RegisterTest extends FunctionalTest {
     @Test
     public void testDuplicateUsername() {
         Map<String, String> credentials = new HashMap<>();
-        credentials.put("username", "Adam");
+        credentials.put("username", "User");
         credentials.put("password", "test");
 
         given()

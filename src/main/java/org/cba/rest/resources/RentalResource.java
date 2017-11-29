@@ -3,16 +3,18 @@ package org.cba.rest.resources;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
-import io.ebean.Ebean;
 import org.cba.model.entities.Location;
-import org.cba.model.entities.Rating;
 import org.cba.model.entities.Rental;
 import org.cba.model.entities.User;
+import org.cba.model.exceptions.ResourceNotFoundException;
 import org.cba.model.facade.LocationFacade;
 import org.cba.model.facade.RentalFacade;
+import org.cba.model.facades.RatingFacade;
+import org.cba.rest.util.ErrorResponse;
 import org.cba.rest.util.FileUploader;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
@@ -23,7 +25,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 
@@ -93,14 +96,26 @@ public class RentalResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public String rateRental (String json, @PathParam("id") int id, @Context SecurityContext sc) throws IOException {
         int points = mapper.readTree(json).get("rating").asInt();
-        Rating rating = new Rating();
         User user = (User) sc.getUserPrincipal();
         Rental rental = Rental.find.byId(id);
-        rating.setRental(rental);
-        rating.setUser(user);
-        rating.setRating(points);
-        Ebean.save(rating);
+        RatingFacade facade = new RatingFacade();
+        facade.updateRating(rental,user,points);
         return writer.writeValueAsString(rental);
+    }
+
+    @Path("/{rentalId}/rating/user/{userId}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getRentalRatingOfUser (@PathParam("rentalId") int rentalId, @PathParam("userId") int userId) throws IOException {
+        RatingFacade facade = new RatingFacade();
+        try {
+            int rating = facade.getRating(rentalId,userId).getRating();
+            ObjectNode resultJson = mapper.createObjectNode();
+            resultJson.put("rating", rating);
+            return Response.ok(resultJson.toString()).build();
+        } catch (ResourceNotFoundException e) {
+            return new ErrorResponse(e).build();
+        }
     }
 
 }

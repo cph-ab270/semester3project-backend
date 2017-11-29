@@ -1,6 +1,6 @@
 package api;
 
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,14 +16,14 @@ public class LoginTest extends FunctionalTest {
     @Test
     public void testSuccessfulLogin() {
         Map<String, String> credentials = new HashMap<>();
-        credentials.put("username", "Adam");
+        credentials.put("username", "User");
         credentials.put("password", "test");
 
         given()
                 .contentType("application/json")
                 .body(credentials)
                 .when().post("/login").then()
-                .body("username", equalTo("Adam"))
+                .body("username", equalTo("User"))
                 .body("token",notNullValue());
     }
 

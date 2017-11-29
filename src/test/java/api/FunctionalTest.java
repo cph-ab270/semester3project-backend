@@ -1,7 +1,7 @@
 package api;
 
 import com.jayway.restassured.RestAssured;
-import org.junit.BeforeClass;
+import org.testng.annotations.BeforeClass;
 
 /**
  * Created by adam on 11/19/2017.
