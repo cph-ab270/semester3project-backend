@@ -50,7 +50,7 @@ public class LocationTest extends FunctionalTest{
                 .body("id", notNullValue())
                 .body("description", equalTo("Great environment"))
                 .body("title", equalTo("Title"))
-                .body("imageUrl", endsWith("download.jpg"))
+                .body("imageUrl", endsWith(".jpg"))
                 .body("latitude", is(60f))
                 .body("longitude", is(10f));
 
