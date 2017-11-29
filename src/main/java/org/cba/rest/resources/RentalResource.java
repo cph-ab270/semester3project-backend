@@ -2,30 +2,48 @@ package org.cba.rest.resources;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import io.ebean.Ebean;
 import org.cba.model.entities.Location;
+import org.cba.model.entities.Rating;
 import org.cba.model.entities.Rental;
+import org.cba.model.entities.User;
 import org.cba.model.facade.LocationFacade;
 import org.cba.model.facade.RentalFacade;
 import org.cba.rest.util.FileUploader;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import java.io.*;
 import java.util.List;
 
 
 @Path("/rentals")
 public class RentalResource {
-    private ObjectMapper mapper = new ObjectMapper();
+    private ObjectWriter writer;
+    private final ObjectMapper mapper;
+
+    public RentalResource() {
+        FilterProvider filters = new SimpleFilterProvider()
+                .addFilter("RentalRatingFilter", SimpleBeanPropertyFilter.serializeAllExcept("ratings"));
+        mapper = new ObjectMapper();
+        writer = mapper.writer(filters);
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getRentals() throws JsonProcessingException {
         List<Rental> rentals = Rental.find.all();
-        return mapper.writeValueAsString(rentals);
+        return writer.writeValueAsString(rentals);
     }
 
     @Path("{id}")
@@ -34,7 +52,7 @@ public class RentalResource {
     public String getRental(@PathParam("id") int id) throws JsonProcessingException {
         Rental rental = Rental.find.byId(id);
         if (rental == null) throw new NotFoundException();
-        return mapper.writeValueAsString(rental);
+        return writer.writeValueAsString(rental);
     }
 
     @POST
@@ -53,7 +71,7 @@ public class RentalResource {
         String imgHttpPath = fileUploader.uploadFile(file, fileDisposition);
         RentalFacade rentalFacade = new RentalFacade();
         Rental rental = rentalFacade.addRental(city, zip, address, description, title, imgHttpPath, latitude, longitude);
-        return Response.ok(mapper.writeValueAsString(rental)).build();
+        return Response.ok(writer.writeValueAsString(rental)).build();
     }
 
     @GET
@@ -64,8 +82,27 @@ public class RentalResource {
         Rental rental = Rental.find.byId(rentalId);
         LocationFacade locationFacade = new LocationFacade();
         List<Location> locations = locationFacade.findPlacesCloseToRental(rental, radius);
-        return mapper.writeValueAsString(locations);
+        return writer.writeValueAsString(locations);
     }
+
+
+    @Path("/{id}/rating")
+    @PUT
+    @RolesAllowed({"User", "Admin"})
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String rateRental (String json, @PathParam("id") int id, @Context SecurityContext sc) throws IOException {
+        int points = mapper.readTree(json).get("rating").asInt();
+        Rating rating = new Rating();
+        User user = (User) sc.getUserPrincipal();
+        Rental rental = Rental.find.byId(id);
+        rating.setRental(rental);
+        rating.setUser(user);
+        rating.setRating(points);
+        Ebean.save(rating);
+        return writer.writeValueAsString(rental);
+    }
+
 }
 
 

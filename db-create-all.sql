@@ -1,11 +1,31 @@
+create table location (
+  id                            integer auto_increment not null,
+  title                         varchar(255) not null,
+  description                   TEXT not null,
+  image_url                     varchar(255) not null,
+  latitude                      double,
+  longitude                     double,
+  constraint pk_location primary key (id)
+);
+
+create table rating (
+  id                            integer auto_increment not null,
+  user_id                       integer not null,
+  rental_id                     integer not null,
+  rating                        integer not null,
+  constraint pk_rating primary key (id)
+);
+
 create table rental (
   id                            integer auto_increment not null,
+  title                         varchar(255) not null,
   city                          varchar(255) not null,
   zip                           varchar(255) not null,
   address                       varchar(255) not null,
-  description                   varchar(255),
-  rating                        integer not null,
+  description                   TEXT not null,
   image_url                     varchar(255) not null,
+  latitude                      double,
+  longitude                     double,
   constraint pk_rental primary key (id)
 );
 
@@ -28,6 +48,12 @@ create table user_role (
   role_id                       integer not null,
   constraint pk_user_role primary key (user_id,role_id)
 );
+
+alter table rating add constraint fk_rating_user_id foreign key (user_id) references user (id) on delete restrict on update restrict;
+create index ix_rating_user_id on rating (user_id);
+
+alter table rating add constraint fk_rating_rental_id foreign key (rental_id) references rental (id) on delete restrict on update restrict;
+create index ix_rating_rental_id on rating (rental_id);
 
 alter table user_role add constraint fk_user_role_user foreign key (user_id) references user (id) on delete restrict on update restrict;
 create index ix_user_role_user on user_role (user_id);
