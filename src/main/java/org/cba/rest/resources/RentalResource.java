@@ -12,14 +12,9 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import org.cba.model.entities.Location;
 import org.cba.model.entities.Rental;
 import org.cba.model.entities.User;
-import org.cba.model.exceptions.ResourceNotFoundException;
-import org.cba.model.facades.BookingFacade;
-import org.cba.model.facades.LocationFacade;
-import org.cba.model.facades.RatingFacade;
-import org.cba.model.facades.RentalFacade;
+import org.cba.model.facades.*;
 import org.cba.model.util.RentalBookingSerializer;
 import org.cba.model.util.WeekDateFormatter;
-import org.cba.rest.util.ErrorResponse;
 import org.cba.rest.util.FileUploader;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
@@ -41,6 +36,7 @@ import java.util.List;
 public class RentalResource {
     private ObjectWriter writer;
     private final ObjectMapper mapper;
+    private RentalFacade rentalFacade = new RentalFacade();
 
     public RentalResource() {
         FilterProvider filters = new SimpleFilterProvider()
@@ -60,8 +56,7 @@ public class RentalResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getRental(@PathParam("id") int id) throws JsonProcessingException {
-        Rental rental = Rental.find.byId(id);
-        if (rental == null) throw new NotFoundException();
+        Rental rental = rentalFacade.getById(id);
         return writer.writeValueAsString(rental);
     }
 
@@ -89,7 +84,7 @@ public class RentalResource {
     @Produces(MediaType.APPLICATION_JSON)
     public String getLocationsNearRental(@PathParam("rentalId") int rentalId,
                                          @DefaultValue("5") @PathParam("radius") int radius) throws JsonProcessingException {
-        Rental rental = Rental.find.byId(rentalId);
+        Rental rental = rentalFacade.getById(rentalId);
         LocationFacade locationFacade = new LocationFacade();
         List<Location> locations = locationFacade.findPlacesCloseToRental(rental, radius);
         return writer.writeValueAsString(locations);
@@ -102,9 +97,9 @@ public class RentalResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public String rateRental (String json, @PathParam("id") int id, @Context SecurityContext sc) throws IOException {
+        Rental rental = rentalFacade.getById(id);
         int points = mapper.readTree(json).get("rating").asInt();
         User user = (User) sc.getUserPrincipal();
-        Rental rental = Rental.find.byId(id);
         RatingFacade facade = new RatingFacade();
         facade.updateRating(rental,user,points);
         return writer.writeValueAsString(rental);
@@ -113,16 +108,15 @@ public class RentalResource {
     @Path("/{rentalId}/rating/user/{userId}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getRentalRatingOfUser (@PathParam("rentalId") int rentalId, @PathParam("userId") int userId) throws IOException {
+    public String getRentalRatingOfUser (@PathParam("rentalId") int rentalId, @PathParam("userId") int userId) throws IOException {
+        UserFacade userFacade = new UserFacade();
+        User user = userFacade.getById(userId);
+        Rental rental = rentalFacade.getById(rentalId);
         RatingFacade facade = new RatingFacade();
-        try {
-            int rating = facade.getRating(rentalId,userId).getRating();
-            ObjectNode resultJson = mapper.createObjectNode();
-            resultJson.put("rating", rating);
-            return Response.ok(resultJson.toString()).build();
-        } catch (ResourceNotFoundException e) {
-            return new ErrorResponse(e).build();
-        }
+        int rating = facade.getRatingByRentalAndUser(rental,user).getRating();
+        ObjectNode resultJson = mapper.createObjectNode();
+        resultJson.put("rating", rating);
+        return resultJson.toString();
     }
 
     @Path("{rentalId}/booking")
@@ -133,7 +127,7 @@ public class RentalResource {
     public String bookRental(@PathParam("rentalId") int rentalId, String json, @Context SecurityContext sc) throws IOException, ParseException {
         Date weekDate = getWeekDate(json);
         User user = (User) sc.getUserPrincipal();
-        Rental rental = Rental.find.byId(rentalId);
+        Rental rental = rentalFacade.getById(rentalId);
         BookingFacade facade = new BookingFacade();
         facade.addBooking(weekDate,rental,user);
         return serializeRentalWithBookings(rental);
@@ -158,7 +152,7 @@ public class RentalResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getAllBookings(@PathParam("rentalId") int rentalId) throws IOException, ParseException {
-        Rental rental = Rental.find.byId(rentalId);
+        Rental rental = rentalFacade.getById(rentalId);
         return serializeRentalWithBookings(rental);
     }
 }

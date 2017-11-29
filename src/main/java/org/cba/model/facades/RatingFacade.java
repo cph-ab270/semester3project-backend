@@ -4,7 +4,8 @@ import io.ebean.Ebean;
 import org.cba.model.entities.Rating;
 import org.cba.model.entities.Rental;
 import org.cba.model.entities.User;
-import org.cba.model.exceptions.ResourceNotFoundException;
+
+import javax.ws.rs.NotFoundException;
 
 /**
  * Created by adam on 29/11/2017.
@@ -12,25 +13,18 @@ import org.cba.model.exceptions.ResourceNotFoundException;
 public class RatingFacade {
 
     public void updateRating(Rental rental, User user, int points) {
-        Rating rating;
-        try {
-            rating = getRating(rental.getId(),user.getId());
-        } catch (ResourceNotFoundException e) {
-            rating = new Rating();
-        }
+        Rating rating = getRatingByRentalAndUser(rental,user);
         rating.setRental(rental);
         rating.setUser(user);
         rating.setRating(points);
         Ebean.save(rating);
     }
 
-    public Rating getRating(int rentalId, int userId) throws ResourceNotFoundException {
+    public Rating getRatingByRentalAndUser(Rental rental, User user) {
         Rating rating = Rating.find.where()
-                .rental.id.eq(rentalId)
-                .user.id.eq(userId).findOne();
-        if (rating == null) {
-            throw new ResourceNotFoundException(Rating.class, " rentalId: " + rentalId + " and userId: " + userId);
-        }
+                .rental.equalTo(rental)
+                .user.equalTo(user).findOne();
+        if (rating == null) throw new NotFoundException();
         return rating;
     }
 }
