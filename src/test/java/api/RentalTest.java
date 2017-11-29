@@ -67,7 +67,7 @@ public class RentalTest extends FunctionalTest {
                 .body("latitude", equalTo(60f))
                 .body("longitude", equalTo(10f))
                 .body("rating", equalTo(0))
-                .body("imageUrl", endsWith("download.jpg"));
+                .body("imageUrl", endsWith(".jpg"));
 
     }
 
