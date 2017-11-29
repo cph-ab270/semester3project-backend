@@ -8,6 +8,7 @@ import org.cba.rest.util.FileUploader;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -39,6 +40,7 @@ public class LocationResource {
     }
 
     @POST
+    @RolesAllowed({"User","Admin"})
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addRental(@FormDataParam("latitude") Double latitude,

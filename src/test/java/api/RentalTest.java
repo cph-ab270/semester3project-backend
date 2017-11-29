@@ -47,6 +47,7 @@ public class RentalTest extends FunctionalTest {
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(classLoader.getResource("download.jpg").getFile());
 
+        String token = getAuthToken();
         given()
                 .multiPart("file", file)
                 .multiPart("city", "CPH")
@@ -56,6 +57,7 @@ public class RentalTest extends FunctionalTest {
                 .multiPart("description", "Great environment")
                 .multiPart("latitude", 60)
                 .multiPart("longitude", 10)
+                .header("Authorization","Bearer "+token)
                 .when().post("/rentals").then()
                 .body("id", notNullValue())
                 .body("city", equalTo("CPH"))

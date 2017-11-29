@@ -38,12 +38,14 @@ public class LocationTest extends FunctionalTest{
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(classLoader.getResource("download.jpg").getFile());
 
+        String token = getAuthToken();
         given()
                 .multiPart("file", file)
                 .multiPart("title", "Title")
                 .multiPart("description", "Great environment")
                 .multiPart("latitude", 60.0)
                 .multiPart("longitude", 10.0)
+                .header("Authorization","Bearer "+token)
                 .when().post("/locations").then()
                 .body("id", notNullValue())
                 .body("description", equalTo("Great environment"))
