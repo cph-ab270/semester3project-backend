@@ -1,8 +1,10 @@
 package org.cba.rest.resources;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
@@ -11,9 +13,12 @@ import org.cba.model.entities.Location;
 import org.cba.model.entities.Rental;
 import org.cba.model.entities.User;
 import org.cba.model.exceptions.ResourceNotFoundException;
-import org.cba.model.facade.LocationFacade;
-import org.cba.model.facade.RentalFacade;
+import org.cba.model.facades.BookingFacade;
+import org.cba.model.facades.LocationFacade;
 import org.cba.model.facades.RatingFacade;
+import org.cba.model.facades.RentalFacade;
+import org.cba.model.util.RentalBookingSerializer;
+import org.cba.model.util.WeekDateFormatter;
 import org.cba.rest.util.ErrorResponse;
 import org.cba.rest.util.FileUploader;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
@@ -27,6 +32,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 
@@ -37,7 +44,7 @@ public class RentalResource {
 
     public RentalResource() {
         FilterProvider filters = new SimpleFilterProvider()
-                .addFilter("RentalRatingFilter", SimpleBeanPropertyFilter.serializeAllExcept("ratings"));
+                .addFilter("RentalRatingFilter", SimpleBeanPropertyFilter.serializeAllExcept("ratings","bookings"));
         mapper = new ObjectMapper();
         writer = mapper.writer(filters);
     }
@@ -118,6 +125,42 @@ public class RentalResource {
         }
     }
 
+    @Path("{rentalId}/booking")
+    @POST
+    @RolesAllowed({"User", "Admin"})
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String bookRental(@PathParam("rentalId") int rentalId, String json, @Context SecurityContext sc) throws IOException, ParseException {
+        Date weekDate = getWeekDate(json);
+        User user = (User) sc.getUserPrincipal();
+        Rental rental = Rental.find.byId(rentalId);
+        BookingFacade facade = new BookingFacade();
+        facade.addBooking(weekDate,rental,user);
+        return serializeRentalWithBookings(rental);
+    }
+
+    private Date getWeekDate(String json) throws IOException, ParseException {
+        JsonNode jsonData = mapper.readTree(json);
+        String rawWeekDate = jsonData.get("week").asText();
+        WeekDateFormatter formatter = new WeekDateFormatter();
+        return formatter.parse(rawWeekDate);
+    }
+
+    private String serializeRentalWithBookings(Rental rental) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        SimpleModule module = new SimpleModule();
+        module.addSerializer(Rental.class, new RentalBookingSerializer());
+        mapper.registerModule(module);
+        return mapper.writeValueAsString(rental);
+    }
+
+    @Path("{rentalId}/booking")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getAllBookings(@PathParam("rentalId") int rentalId) throws IOException, ParseException {
+        Rental rental = Rental.find.byId(rentalId);
+        return serializeRentalWithBookings(rental);
+    }
 }
 
 

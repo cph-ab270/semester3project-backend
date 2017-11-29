@@ -1,6 +1,5 @@
 package api;
 
-import com.jayway.restassured.response.Response;
 import com.nimbusds.jose.JOSEException;
 import org.testng.annotations.Test;
 
@@ -119,19 +118,6 @@ public class RentalTest extends FunctionalTest {
                 .when().put("/rentals/1/rating").then()
                 .body("id", equalTo(1))
                 .body("rating", equalTo(3));
-    }
-
-    private String getAuthToken() {
-        Map<String, String> credentials = new HashMap<>();
-        credentials.put("username", "User");
-        credentials.put("password", "test");
-
-        Response response = given()
-                .contentType("application/json")
-                .body(credentials)
-                .when().post("/login").andReturn();
-
-        return response.getBody().jsonPath().get("token");
     }
 }
 

@@ -3,7 +3,7 @@ package org.cba.rest.resources;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.cba.model.entities.Location;
-import org.cba.model.facade.LocationFacade;
+import org.cba.model.facades.LocationFacade;
 import org.cba.rest.util.FileUploader;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
