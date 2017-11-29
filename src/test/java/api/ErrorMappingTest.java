@@ -1,6 +1,6 @@
 package api;
 
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import static com.jayway.restassured.RestAssured.given;
 

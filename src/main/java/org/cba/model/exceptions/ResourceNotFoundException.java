@@ -9,6 +9,6 @@ public class ResourceNotFoundException extends Exception{
     }
 
     public ResourceNotFoundException(Class<?> resource, Object identifier) {
-        super("Resource "+resource+ " with identified "+identifier+" not found!");
+        super("Resource "+resource+ " identified as "+identifier+" not found!");
     }
 }

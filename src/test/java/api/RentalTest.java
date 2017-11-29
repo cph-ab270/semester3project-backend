@@ -2,10 +2,7 @@ package api;
 
 import com.jayway.restassured.response.Response;
 import com.nimbusds.jose.JOSEException;
-import org.cba.model.entities.User;
-import org.cba.rest.util.TokenGenerator;
-import org.hamcrest.CoreMatchers;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -94,9 +91,39 @@ public class RentalTest extends FunctionalTest {
     }
 
     @Test
+    public void testGetRating() throws JOSEException {
+        given()
+                .contentType("application/json")
+                .when().get("/rentals/1/rating/user/1").then()
+                .body("rating", equalTo(5));
+    }
+
+    @Test
+    public void testGetNonExistingRating() throws JOSEException {
+        given()
+                .contentType("application/json")
+                .when().get("/rentals/1/rating/user/2").then()
+                .statusCode(404);
+    }
+
+    @Test(priority = 1)
     public void testUpdateRating() throws JOSEException {
+        String token = getAuthToken();
+
+        Map<String, Integer> data = new HashMap<>();
+        data.put("rating", 3);
+        given()
+                .contentType("application/json")
+                .body(data)
+                .header("Authorization", "Bearer " + token)
+                .when().put("/rentals/1/rating").then()
+                .body("id", equalTo(1))
+                .body("rating", equalTo(3));
+    }
+
+    private String getAuthToken() {
         Map<String, String> credentials = new HashMap<>();
-        credentials.put("username", "Adam");
+        credentials.put("username", "User");
         credentials.put("password", "test");
 
         Response response = given()
@@ -104,17 +131,7 @@ public class RentalTest extends FunctionalTest {
                 .body(credentials)
                 .when().post("/login").andReturn();
 
-        Map<String, Integer> data = new HashMap<>();
-        data.put("rating", 1);
-        String token = response.getBody().jsonPath().get("token");
-
-        given()
-                .contentType("application/json")
-                .body(data)
-                .header("Authorization", "Bearer " + token)
-                .when().put("/rentals/1/rating").then()
-                .body("id", equalTo(1))
-                .body("rating", equalTo(1));
+        return response.getBody().jsonPath().get("token");
     }
 }
 
