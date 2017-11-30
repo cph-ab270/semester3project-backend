@@ -121,6 +121,21 @@ public class RentalTest extends FunctionalTest {
                 .body("id", equalTo(1))
                 .body("rating", equalTo(3));
     }
+
+    @Test
+    public void testCreateNewRating() throws JOSEException {
+        String token = getAuthToken("User");
+
+        Map<String, Integer> data = new HashMap<>();
+        data.put("rating", 3);
+        given()
+                .contentType("application/json")
+                .body(data)
+                .header("Authorization", "Bearer " + token)
+                .when().put("/rentals/2/rating").then()
+                .body("id", equalTo(2))
+                .body("rating", equalTo(3));
+    }
 }
 
 

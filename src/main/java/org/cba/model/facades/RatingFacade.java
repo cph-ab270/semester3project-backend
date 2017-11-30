@@ -13,9 +13,12 @@ import javax.ws.rs.NotFoundException;
 public class RatingFacade {
 
     public void updateRating(Rental rental, User user, int points) {
-        Rating rating = getRatingByRentalAndUser(rental,user);
-        rating.setRental(rental);
-        rating.setUser(user);
+        Rating rating;
+        try {
+            rating = getRatingByRentalAndUser(rental,user);
+        } catch (NotFoundException e) {
+            rating = createNewRating(rental, user);
+        }
         rating.setRating(points);
         Ebean.save(rating);
     }
@@ -25,6 +28,14 @@ public class RatingFacade {
                 .rental.equalTo(rental)
                 .user.equalTo(user).findOne();
         if (rating == null) throw new NotFoundException();
+        return rating;
+    }
+
+    private Rating createNewRating(Rental rental, User user) {
+        Rating rating;
+        rating = new Rating();
+        rating.setRental(rental);
+        rating.setUser(user);
         return rating;
     }
 }
