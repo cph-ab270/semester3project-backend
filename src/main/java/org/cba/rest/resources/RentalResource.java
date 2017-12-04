@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import org.cba.model.entities.Booking;
 import org.cba.model.entities.Location;
 import org.cba.model.entities.Rental;
 import org.cba.model.entities.User;
@@ -40,7 +41,7 @@ public class RentalResource {
 
     public RentalResource() {
         FilterProvider filters = new SimpleFilterProvider()
-                .addFilter("RentalRatingFilter", SimpleBeanPropertyFilter.serializeAllExcept("ratings","bookings"));
+                .addFilter("RentalRatingFilter", SimpleBeanPropertyFilter.serializeAllExcept("ratings", "bookings"));
         mapper = new ObjectMapper();
         writer = mapper.writer(filters);
     }
@@ -97,24 +98,24 @@ public class RentalResource {
     @RolesAllowed({"User", "Admin"})
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public String rateRental (String json, @PathParam("id") int id, @Context SecurityContext sc) throws IOException {
+    public String rateRental(String json, @PathParam("id") int id, @Context SecurityContext sc) throws IOException {
         Rental rental = rentalFacade.getById(id);
         int points = mapper.readTree(json).get("rating").asInt();
         User user = (User) sc.getUserPrincipal();
         RatingFacade facade = new RatingFacade();
-        facade.updateRating(rental,user,points);
+        facade.updateRating(rental, user, points);
         return writer.writeValueAsString(rental);
     }
 
     @Path("/{rentalId}/rating/user/{userId}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getRentalRatingOfUser (@PathParam("rentalId") int rentalId, @PathParam("userId") int userId) throws IOException {
+    public String getRentalRatingOfUser(@PathParam("rentalId") int rentalId, @PathParam("userId") int userId) throws IOException {
         UserFacade userFacade = new UserFacade();
         User user = userFacade.getById(userId);
         Rental rental = rentalFacade.getById(rentalId);
         RatingFacade facade = new RatingFacade();
-        int rating = facade.getRatingByRentalAndUser(rental,user).getRating();
+        int rating = facade.getRatingByRentalAndUser(rental, user).getRating();
         ObjectNode resultJson = mapper.createObjectNode();
         resultJson.put("rating", rating);
         return resultJson.toString();
@@ -130,7 +131,7 @@ public class RentalResource {
         User user = (User) sc.getUserPrincipal();
         Rental rental = rentalFacade.getById(rentalId);
         BookingFacade facade = new BookingFacade();
-        facade.addBooking(weekDate,rental,user);
+        facade.addBooking(weekDate, rental, user);
         return serializeRentalWithBookings(rental);
     }
 
@@ -156,7 +157,16 @@ public class RentalResource {
         Rental rental = rentalFacade.getById(rentalId);
         return serializeRentalWithBookings(rental);
     }
+
+
+    @Path("{rentalId}/booking")
+    @DELETE
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response deleteBooking(@PathParam("rentalId") int rentalId, String json, @Context SecurityContext sc) throws IOException, ParseException {
+        Date weekDate = getWeekDate(json);
+        Rental rental = rentalFacade.getById(rentalId);
+        BookingFacade bookingFacade = new BookingFacade();
+        bookingFacade.deleteBooking(weekDate, rental);
+        return Response.ok().build();
+    }
 }
-
-
-

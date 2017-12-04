@@ -5,6 +5,7 @@ import org.cba.model.entities.Booking;
 import org.cba.model.entities.Rental;
 import org.cba.model.entities.User;
 
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.WebApplicationException;
 import java.util.Date;
 
@@ -32,4 +33,14 @@ public class BookingFacade {
             super("The rental is already taken in this date.", 400);
         }
     }
+
+    public Booking deleteBooking(Date weekDate, Rental rental) {
+        Booking rdyToDelete = Booking.find.where().week.equalTo(weekDate).rental.equalTo(rental).findOne();
+        if(rdyToDelete == null) {
+            throw new NotFoundException();
+        }
+        Ebean.delete(rdyToDelete);
+        return rdyToDelete;
+    }
 }
+
