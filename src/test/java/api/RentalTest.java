@@ -66,7 +66,7 @@ public class RentalTest extends FunctionalTest {
                 .body("description", equalTo("Great environment"))
                 .body("latitude", equalTo(60f))
                 .body("longitude", equalTo(10f))
-                .body("rating", equalTo(0))
+                .body("rating", equalTo(0f))
                 .body("imageUrl", endsWith(".jpg"));
 
     }
@@ -112,14 +112,14 @@ public class RentalTest extends FunctionalTest {
         String token = getAuthToken("User");
 
         Map<String, Integer> data = new HashMap<>();
-        data.put("rating", 3);
+        data.put("rating", 4);
         given()
                 .contentType("application/json")
                 .body(data)
                 .header("Authorization", "Bearer " + token)
                 .when().put("/rentals/1/rating").then()
                 .body("id", equalTo(1))
-                .body("rating", equalTo(3));
+                .body("rating", equalTo(4f));
     }
 
     @Test
@@ -134,7 +134,7 @@ public class RentalTest extends FunctionalTest {
                 .header("Authorization", "Bearer " + token)
                 .when().put("/rentals/2/rating").then()
                 .body("id", equalTo(2))
-                .body("rating", equalTo(3));
+                .body("rating", equalTo(3f));
     }
 }
 

@@ -55,13 +55,15 @@ public class Rental {
     }
 
     @Transient
-    public int getRating() {
+    public float getRating() {
         if (this.getRatings().size() == 0) return 0;
-        int totalPoints = 0;
+        float totalPoints = 0;
         for (Rating rating : this.getRatings()) {
             totalPoints += rating.getRating();
         }
-        return totalPoints / this.getRatings().size();
+        float rating = totalPoints / this.getRatings().size();
+        return Math.round(rating * 10f) / 10f;
+
     }
 
     public Double getLatitude() {
