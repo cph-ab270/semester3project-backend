@@ -161,6 +161,7 @@ public class RentalResource {
 
     @Path("{rentalId}/booking")
     @DELETE
+    @RolesAllowed({"User", "Admin"})
     @Consumes(MediaType.APPLICATION_JSON)
     public Response deleteBooking(@PathParam("rentalId") int rentalId, String json, @Context SecurityContext sc) throws IOException, ParseException {
         Date weekDate = getWeekDate(json);
