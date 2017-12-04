@@ -1,6 +1,7 @@
 package api;
 
 import com.nimbusds.jose.JOSEException;
+import org.cba.model.entities.Rental;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
@@ -57,5 +58,38 @@ public class BookingTest extends FunctionalTest{
                 .contentType("application/json")
                 .when().get("/rentals/10/booking").then()
                 .statusCode(404);
+    }
+
+    @Test
+    public void testDeleteNonExistentBooking() throws JOSEException {
+        String token = getAuthToken("User");
+
+        given()
+                .contentType("application/json")
+                .header("Authorization", "Bearer " + token)
+                .when().delete("/rentals/10/booking").then()
+                .statusCode(404);
+    }
+
+    @Test
+    public void testDeleteExistingBooking() throws JOSEException {
+        String token = getAuthToken("User");
+
+        Map<String, String> data = new HashMap<>();
+        data.put("week", "2017-W44");
+        given()
+                .contentType("application/json")
+                .body(data)
+                .header("Authorization", "Bearer " + token)
+                .when().post("/rentals/2/booking").then()
+                .body("userName", hasItem("User"))
+                .body("week", hasItem("2017-W44"));
+
+        given()
+                .contentType("application/json")
+                .body(data)
+                .header("Authorization", "Bearer " + token)
+                .when().delete("/rentals/2/booking").then()
+                .statusCode(200);
     }
 }
