@@ -164,8 +164,8 @@ public class RentalResource {
     @RolesAllowed({"User", "Admin"})
     @Consumes(MediaType.APPLICATION_JSON)
     public Response deleteBooking(@PathParam("rentalId") int rentalId, String json, @Context SecurityContext sc) throws IOException, ParseException {
-        Date weekDate = getWeekDate(json);
         Rental rental = rentalFacade.getById(rentalId);
+        Date weekDate = getWeekDate(json);
         BookingFacade bookingFacade = new BookingFacade();
         bookingFacade.deleteBooking(weekDate, rental);
         return Response.ok().build();
